@@ -17,14 +17,14 @@
   background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=3200&q=96');
 }
 
-/* Homepage hero: keep the mascot tucked beside COME HUNGRY, behind the hero shade. */
+/* Homepage hero: keep the mascot exactly where it is, just smaller. */
 .hero-mascot {
   display: block !important;
   position: absolute;
   z-index: 0;
   left: 43%;
   top: 52%;
-  width: min(320px, 26vw);
+  width: min(180px, 16vw);
   height: auto;
   max-width: none;
   pointer-events: none;
@@ -112,7 +112,7 @@
     left: auto;
     right: 5vw;
     top: 43%;
-    width: min(250px, 46vw);
+    width: min(180px, 34vw);
   }
 }
 
@@ -120,7 +120,7 @@
   .hero-mascot {
     right: -8px;
     top: 40%;
-    width: min(215px, 50vw);
+    width: min(160px, 38vw);
   }
 
   .location-card-map,
