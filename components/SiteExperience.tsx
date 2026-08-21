@@ -1,12 +1,14 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight, ChevronDown, Flame, MapPin, Menu, UtensilsCrossed, X } from 'lucide-react';
+import { ArrowRight, ChevronDown, Flame, Instagram, MapPin, Menu, UtensilsCrossed, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import StorySection from './StorySection';
 import { locations, type LocationKey, type RestaurantLocation } from '../lib/locations';
 
+const INSTAGRAM_URL = 'https://www.instagram.com/muertodehambregrill/';
 const reveal = { hidden: { opacity: 0, y: 42 }, visible: { opacity: 1, y: 0 } };
+const mapEmbedUrl = (address: string) => `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
 
 function playFireWhoosh() {
   try {
@@ -110,12 +112,16 @@ function Header({ onOrder }: { onOrder: () => void }) {
   return (
     <header className="site-header brand-header">
       <a className="brand-header-logo" href="#top" aria-label="Muerto De Hambre Grill home"><img src="/brand/header.webp" alt="Muerto De Hambre Grill" /></a>
-      <nav className="desktop-nav" aria-label="Main navigation">{nav.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}</nav>
+      <nav className="desktop-nav" aria-label="Main navigation">
+        {nav.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}
+        <a className="instagram-nav-link" href={INSTAGRAM_URL} target="_blank" rel="noreferrer"><Instagram size={14} /> Instagram</a>
+      </nav>
       <button className="order-button order-button-header" type="button" onClick={onOrder}>Order Online<Flame size={16} fill="currentColor" /></button>
       <button className="mobile-menu-button" type="button" onClick={() => setMenuOpen((value) => !value)} aria-label="Toggle navigation">{menuOpen ? <X /> : <Menu />}</button>
       <AnimatePresence>{menuOpen && (
         <motion.nav className="mobile-nav" initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }}>
           {nav.map((item) => <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>{item.label}</a>)}
+          <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)}>Instagram</a>
           <button type="button" onClick={() => { setMenuOpen(false); onOrder(); }}>Order Online</button>
         </motion.nav>
       )}</AnimatePresence>
@@ -143,6 +149,7 @@ export default function SiteExperience() {
             <h1>COME<span>HUNGRY.</span></h1>
             <p>Authentic Mexican flavor meets Gio’s fusion creativity. Two Southern California locations, one unmistakable Muerto De Hambre attitude.</p>
             <div className="hero-actions"><button type="button" className="order-button hero-order" onClick={() => setOrderOpen(true)}>Order Online<ArrowRight size={19} /></button><a className="ghost-button brand-ghost" href="/locations">View Locations</a></div>
+            <a className="instagram-hero-link" href={INSTAGRAM_URL} target="_blank" rel="noreferrer"><Instagram size={16} /> Follow @muertodehambregrill</a>
           </motion.div>
           <a className="scroll-cue" href="#favorites" aria-label="Scroll to featured section">Scroll<ChevronDown size={18} /></a>
         </section>
@@ -167,17 +174,19 @@ export default function SiteExperience() {
         <section className="catering brand-catering" id="catering"><div className="catering-photo" /><div className="catering-shade" /><motion.div className="catering-content" variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.65 }}><span className="eyebrow">FEED THE WHOLE CREW</span><h2>CATERING,<br />MUERTO STYLE.</h2><p>We’ll lock this section to Hambre’s real catering packages and inquiry process as soon as those details are confirmed.</p><a className="ghost-button light" href="/locations">Find a location</a></motion.div></section>
 
         <section className="section locations-section brand-locations-preview" id="locations">
-          <motion.div className="section-heading centered" variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }}><span className="eyebrow">TWO SPOTS. SAME HUNGER.</span><h2>FIND YOUR HAMBRE.</h2><p>See full weekly hours, directions, and ordering for both locations.</p></motion.div>
+          <motion.div className="section-heading centered" variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }}><span className="eyebrow">TWO SPOTS. SAME HUNGER.</span><h2>FIND YOUR HAMBRE.</h2><p>See each location right on the map, plus full weekly hours, directions, and online ordering.</p></motion.div>
           <div className="location-grid">{locations.map((location, index) => (
             <motion.article className="location-card brand-location-card" key={location.key} variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.58, delay: index * 0.08 }}>
-              <div className="location-card-art"><img src="/brand/mascot.webp" alt="" aria-hidden="true" /></div>
+              <div className="location-card-map">
+                <iframe title={`${location.city} Google Map`} src={mapEmbedUrl(location.address)} loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />
+              </div>
               <div className="location-card-body"><MapPin size={18} /><span>CALIFORNIA</span><h3>{location.city}</h3><p>{location.address}</p><div className="location-card-actions"><button type="button" onClick={() => orderLocation(location)}>Order this location <ArrowRight size={18} /></button><a href="/locations">Hours & directions</a></div></div>
             </motion.article>
           ))}</div>
         </section>
       </main>
 
-      <footer className="footer brand-footer"><div className="footer-mark"><UtensilsCrossed size={26} /><strong>MUERTO DE HAMBRE</strong><span>GRILL</span></div><div className="footer-links"><a href="#favorites">Food</a><a href="#story">Story</a><a href="/locations">Locations</a><button type="button" onClick={() => setOrderOpen(true)}>Order Online</button></div><p>San Bernardino · Lawndale · California</p></footer>
+      <footer className="footer brand-footer"><div className="footer-mark"><UtensilsCrossed size={26} /><strong>MUERTO DE HAMBRE</strong><span>GRILL</span></div><div className="footer-links"><a href="#favorites">Food</a><a href="#story">Story</a><a href="/locations">Locations</a><a className="instagram-footer-link" href={INSTAGRAM_URL} target="_blank" rel="noreferrer"><Instagram size={15} /> Instagram</a><button type="button" onClick={() => setOrderOpen(true)}>Order Online</button></div><p>San Bernardino · Lawndale · California</p></footer>
       <button className="mobile-order-sticky" type="button" onClick={() => setOrderOpen(true)}><Flame size={17} fill="currentColor" />Order Online</button>
     </>
   );
