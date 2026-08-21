@@ -11,6 +11,7 @@ import {
   X,
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import StorySection from './StorySection';
 
 type LocationKey = 'rialto' | 'lawndale';
 
@@ -391,19 +392,7 @@ export default function SiteExperience() {
           </div>
         </section>
 
-        <section className="story-band" id="story">
-          <div className="story-image" />
-          <motion.div className="story-copy" variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.66 }}>
-            <span className="eyebrow">MUERTO DE HAMBRE</span>
-            <h2>NOT A QUIET<br />KIND OF HUNGRY.</h2>
-            <p>
-              This section is reserved for the real Muerto De Hambre story. We’ll turn the restaurant’s origin, people, and personality into a brand moment instead of generic “about us” filler.
-            </p>
-            <a href="#locations" className="text-link">
-              Find your location <ArrowRight size={18} />
-            </a>
-          </motion.div>
-        </section>
+        <StorySection />
 
         <section className="section order-callout">
           <motion.div className="order-callout-inner" variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.62 }}>
