@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight, ChevronDown, Flame, Instagram, MapPin, Menu, UtensilsCrossed, X } from 'lucide-react';
+import { ArrowRight, Camera as Instagram, ChevronDown, Flame, MapPin, Menu, UtensilsCrossed, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import StorySection from './StorySection';
 import { locations, type LocationKey, type RestaurantLocation } from '../lib/locations';
