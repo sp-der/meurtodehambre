@@ -5,8 +5,10 @@ import styles from './locations.module.css';
 
 export const metadata = {
   title: 'Locations | Muerto De Hambre Grill',
-  description: 'Hours, addresses, and online ordering for Muerto De Hambre Grill in San Bernardino and Lawndale.',
+  description: 'Hours, addresses, maps, and online ordering for Muerto De Hambre Grill in San Bernardino and Lawndale.',
 };
+
+const mapEmbedUrl = (address: string) => `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
 
 export default function LocationsPage() {
   return (
@@ -24,7 +26,7 @@ export default function LocationsPage() {
       <section className={styles.hero}>
         <span>FIND YOUR HAMBRE</span>
         <h1>LOCATIONS</h1>
-        <p>Two spots. Same hunger. Check the current hours, get directions, or jump straight into online ordering.</p>
+        <p>Two spots. Same hunger. See each location on Google Maps, check current hours, get directions, or jump straight into online ordering.</p>
       </section>
 
       <section className={styles.grid}>
@@ -37,6 +39,16 @@ export default function LocationsPage() {
                 <p>{location.address}</p>
               </div>
               {location.badge && <strong className={styles.badge}>{location.badge}</strong>}
+            </div>
+
+            <div className="location-map-embed">
+              <iframe
+                title={`${location.city} Google Map`}
+                src={mapEmbedUrl(location.address)}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
             </div>
 
             <div className={styles.hours}>
@@ -75,7 +87,7 @@ export default function LocationsPage() {
           <span>SCHEDULE / SOLD OUT UPDATES</span>
           <h2>KEEP AN EYE ON OUR STORIES.</h2>
           <p>Hours can shift and popular items can sell out. Instagram is the fastest place to catch same-day updates.</p>
-          <a href="https://www.instagram.com/muertodehambregrill/?hl=en" target="_blank" rel="noreferrer">
+          <a href="https://www.instagram.com/muertodehambregrill/" target="_blank" rel="noreferrer">
             @muertodehambregrill <ArrowUpRight size={17} />
           </a>
         </div>
