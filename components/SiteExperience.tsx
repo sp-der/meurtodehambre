@@ -145,7 +145,6 @@ export default function SiteExperience() {
           <motion.img src="/brand/mascot.webp" alt="" aria-hidden="true" className="hero-mascot" initial={{ opacity: 0, x: 60, scale: 0.94 }} animate={{ opacity: 1, x: 0, scale: 1 }} transition={{ duration: 1, delay: 0.1 }} />
           <motion.div className="hero-content brand-hero-content" initial={{ opacity: 0, y: 34 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.18 }}>
             <span className="eyebrow">SAN BERNARDINO · LAWNDALE</span>
-            <img src="/brand/header.webp" alt="Muerto De Hambre Grill" className="hero-logo" />
             <h1>COME<span>HUNGRY.</span></h1>
             <p>Authentic Mexican flavor meets Gio’s fusion creativity. Two Southern California locations, one unmistakable Muerto De Hambre attitude.</p>
             <div className="hero-actions"><button type="button" className="order-button hero-order" onClick={() => setOrderOpen(true)}>Order Online<ArrowRight size={19} /></button><a className="ghost-button brand-ghost" href="/locations">View Locations</a></div>
