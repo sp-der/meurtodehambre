@@ -1,0 +1,38 @@
+name: Install high-resolution brand assets
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'asset_payload_v2/READY'
+
+permissions:
+  contents: write
+
+jobs:
+  install-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rebuild brand images
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f asset_payload_v2/READY
+          cat asset_payload_v2/header.part* | tr -d '\n\r ' | base64 --decode > public/brand/header.webp
+          cat asset_payload_v2/mascot.part* | tr -d '\n\r ' | base64 --decode > public/brand/mascot.webp
+          cat asset_payload_v2/favicon.part* | tr -d '\n\r ' | base64 --decode > public/favicon.png
+          file public/brand/header.webp public/brand/mascot.webp public/favicon.png
+          ls -lh public/brand/header.webp public/brand/mascot.webp public/favicon.png
+      - name: Commit installed assets
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/brand/header.webp public/brand/mascot.webp public/favicon.png
+          if git diff --cached --quiet; then
+            echo 'Assets already current.'
+            exit 0
+          fi
+          git commit -m 'Install high-resolution Muerto brand assets'
+          git push
