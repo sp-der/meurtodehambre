@@ -8,7 +8,7 @@ import { locations, type LocationKey, type RestaurantLocation } from '../lib/loc
 
 const INSTAGRAM_URL = 'https://www.instagram.com/muertodehambregrill/';
 const reveal = { hidden: { opacity: 0, y: 42 }, visible: { opacity: 1, y: 0 } };
-const mapEmbedUrl = (address: string) => `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
+const mapEmbedUrl = (query: string) => `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
 
 function playFireWhoosh() {
   try {
@@ -178,7 +178,7 @@ export default function SiteExperience() {
           <div className="location-grid">{locations.map((location, index) => (
             <motion.article className="location-card brand-location-card" key={location.key} variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.58, delay: index * 0.08 }}>
               <div className="location-card-map">
-                <iframe title={`${location.city} Google Map`} src={mapEmbedUrl(location.address)} loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />
+                <iframe title={`${location.city} Google Map`} src={mapEmbedUrl(location.mapQuery)} loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />
               </div>
               <div className="location-card-body"><MapPin size={18} /><span>CALIFORNIA</span><h3>{location.city}</h3><p>{location.address}</p><div className="location-card-actions"><button type="button" onClick={() => orderLocation(location)}>Order this location <ArrowRight size={18} /></button><a href="/locations">Hours & directions</a></div></div>
             </motion.article>
