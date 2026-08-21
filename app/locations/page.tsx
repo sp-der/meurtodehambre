@@ -8,7 +8,7 @@ export const metadata = {
   description: 'Hours, addresses, maps, and online ordering for Muerto De Hambre Grill in San Bernardino and Lawndale.',
 };
 
-const mapEmbedUrl = (address: string) => `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
+const mapEmbedUrl = (query: string) => `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
 
 export default function LocationsPage() {
   return (
@@ -44,7 +44,7 @@ export default function LocationsPage() {
             <div className="location-map-embed">
               <iframe
                 title={`${location.city} Google Map`}
-                src={mapEmbedUrl(location.address)}
+                src={mapEmbedUrl(location.mapQuery)}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 allowFullScreen
@@ -69,7 +69,7 @@ export default function LocationsPage() {
                 Order {location.city} <ArrowUpRight size={18} />
               </a>
               <a
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.address)}`}
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.mapQuery)}`}
                 target="_blank"
                 rel="noreferrer"
                 className={styles.directions}
