@@ -69,7 +69,7 @@ export default function LocationsPage() {
                 Order {location.city} <ArrowUpRight size={18} />
               </a>
               <a
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.mapQuery)}`}
+                href={location.mapsUrl}
                 target="_blank"
                 rel="noreferrer"
                 className={styles.directions}
