@@ -38,8 +38,10 @@ export const locations: RestaurantLocation[] = [
     city: 'Lawndale',
     label: 'Lawndale',
     address: '16711 Hawthorne Blvd, Lawndale, CA 90260',
-    mapQuery: 'Muerto De Hambre Grill, 16711 Hawthorne Blvd, Lawndale, CA 90260',
-    mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Muerto%20De%20Hambre%20Grill%2C%2016711%20Hawthorne%20Blvd%2C%20Lawndale%2C%20CA%2090260',
+    // Exact coordinates from the Google Maps page supplied for 16711 Hawthorne Blvd.
+    mapQuery: '33.8788692,-118.3529064',
+    mapsUrl:
+      'https://www.google.com/maps/place/16711+Hawthorne+Blvd,+Lawndale,+CA+90260/@33.8788736,-118.3554867,17z/data=!3m1!4b1!4m6!3m5!1s0x80c2b4566574a5a7:0x341ee7879f421099!8m2!3d33.8788692!4d-118.3529064!16s%2Fg%2F11bw435529?entry=ttu&g_ep=EgoyMDI2MDgxNy4wIKXMDSoASAFQAw%3D%3D',
     orderUrl:
       'https://order.tryotter.com/s/muerto-de-hambre-grill/16711-hawthorne-blvd-lawndale/534bb216-8cdf-4f8e-80ac-58ea85103389',
     hours: [
@@ -48,8 +50,8 @@ export const locations: RestaurantLocation[] = [
       { days: 'Wednesday', hours: '10:00 AM – 8:00 PM' },
       { days: 'Thursday', hours: '10:00 AM – 8:00 PM' },
       { days: 'Friday', hours: '10:00 AM – 8:00 PM' },
-      { days: 'Saturday', hours: 'Coming Soon' },
-      { days: 'Sunday', hours: 'Coming Soon' },
+      { days: 'Saturday', hours: 'Closed' },
+      { days: 'Sunday', hours: 'Closed' },
     ],
     badge: 'Now serving lunch Mon–Fri',
   },
