@@ -19,9 +19,9 @@ jobs:
         run: |
           set -euo pipefail
           test -f asset_payload_v2/READY
-          cat asset_payload_v2/header.part* | tr -d '\n\r ' | base64 --decode > public/brand/header.webp
-          cat asset_payload_v2/mascot.part* | tr -d '\n\r ' | base64 --decode > public/brand/mascot.webp
-          cat asset_payload_v2/favicon.part* | tr -d '\n\r ' | base64 --decode > public/favicon.png
+          cat asset_payload_v2/headerhi.part* | tr -d '\n\r ' | base64 --decode > public/brand/header.webp
+          cat asset_payload_v2/mascothi.part* | tr -d '\n\r ' | base64 --decode > public/brand/mascot.webp
+          cat asset_payload_v2/faviconhi.part* | tr -d '\n\r ' | base64 --decode > public/favicon.png
           file public/brand/header.webp public/brand/mascot.webp public/favicon.png
           ls -lh public/brand/header.webp public/brand/mascot.webp public/favicon.png
       - name: Commit installed assets
