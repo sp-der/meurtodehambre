@@ -17,9 +17,17 @@
   background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=3200&q=96');
 }
 
-/* Homepage hero: keep the mascot, remove the extra logo image above COME HUNGRY. */
+/* Homepage hero: keep the mascot tucked beside COME HUNGRY, behind the hero shade. */
 .hero-mascot {
   display: block !important;
+  position: absolute;
+  z-index: 0;
+  left: 43%;
+  top: 52%;
+  width: min(320px, 26vw);
+  height: auto;
+  max-width: none;
+  pointer-events: none;
 }
 
 .hero-logo {
@@ -99,7 +107,22 @@
   color: #fff1c9;
 }
 
+@media (max-width: 900px) {
+  .hero-mascot {
+    left: auto;
+    right: 5vw;
+    top: 43%;
+    width: min(250px, 46vw);
+  }
+}
+
 @media (max-width: 650px) {
+  .hero-mascot {
+    right: -8px;
+    top: 40%;
+    width: min(215px, 50vw);
+  }
+
   .location-card-map,
   .location-map-embed {
     height: 240px;
