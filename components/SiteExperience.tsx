@@ -107,7 +107,7 @@ function OrderModal({ open, onClose }: { open: boolean; onClose: () => void }) {
 function Header({ onOrder }: { onOrder: () => void }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const nav = useMemo(() => [
-    { label: 'Story', href: '#story' }, { label: 'Catering', href: '#catering' }, { label: 'Locations', href: '/locations' },
+    { label: 'Story', href: '#story' }, { label: 'Favorites', href: '#favorites' }, { label: 'Catering', href: '#catering' }, { label: 'Locations', href: '/locations' },
   ], []);
   return (
     <header className="site-header brand-header">
@@ -145,15 +145,27 @@ export default function SiteExperience() {
           <motion.img src="/brand/mascot.webp" alt="" aria-hidden="true" className="hero-mascot" initial={{ opacity: 0, x: 60, scale: 0.94 }} animate={{ opacity: 1, x: 0, scale: 1 }} transition={{ duration: 1, delay: 0.1 }} />
           <motion.div className="hero-content brand-hero-content" initial={{ opacity: 0, y: 34 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.18 }}>
             <span className="eyebrow">SAN BERNARDINO · LAWNDALE</span>
+            <img src="/brand/header.webp" alt="Muerto De Hambre Grill" className="hero-logo" />
             <h1>COME<span>HUNGRY.</span></h1>
             <p>Authentic Mexican flavor meets Gio’s fusion creativity. Two Southern California locations, one unmistakable Muerto De Hambre attitude.</p>
             <div className="hero-actions"><button type="button" className="order-button hero-order" onClick={() => setOrderOpen(true)}>Order Online<ArrowRight size={19} /></button><a className="ghost-button brand-ghost" href="/locations">View Locations</a></div>
             <a className="instagram-hero-link" href={INSTAGRAM_URL} target="_blank" rel="noreferrer"><Instagram size={16} /> Follow @muertodehambregrill</a>
           </motion.div>
-          <a className="scroll-cue" href="#story" aria-label="Scroll to story section">Scroll<ChevronDown size={18} /></a>
+          <a className="scroll-cue" href="#favorites" aria-label="Scroll to featured section">Scroll<ChevronDown size={18} /></a>
         </section>
 
         <section className="ticker brand-ticker" aria-label="Restaurant highlights"><div className="ticker-track">{ticker.concat(ticker).map((item, index) => <span key={`${item}-${index}`}>{item}<i>✦</i></span>)}</div></section>
+
+        <section className="section favorites brand-favorites" id="favorites">
+          <motion.div className="section-heading" variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.62 }}>
+            <span className="eyebrow">THE FIRST BITE</span><h2>LOUD FLAVOR.<br />NO APOLOGIES.</h2>
+          </motion.div>
+          <div className="food-grid">
+            {[['food-card-large food-one','01','Signature Plates','Hero-worthy plates belong here.'],['food-two','02','Grill Favorites','Char, crunch, sauce, repeat.'],['food-three','03','Hambre Favorites','The dishes regulars come back for.']].map(([extra, num, title, copy], index) => (
+              <motion.article key={num} className={`food-card ${extra}`} variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6, delay: index * 0.07 }}><div className="food-card-overlay" /><div className="food-copy"><span>{num}</span><h3>{title}</h3><p>{copy}</p></div></motion.article>
+            ))}
+          </div>
+        </section>
 
         <StorySection />
 
@@ -174,7 +186,7 @@ export default function SiteExperience() {
         </section>
       </main>
 
-      <footer className="footer brand-footer"><div className="footer-mark"><UtensilsCrossed size={26} /><strong>MUERTO DE HAMBRE</strong><span>GRILL</span></div><div className="footer-links"><a href="#story">Story</a><a href="/locations">Locations</a><a className="instagram-footer-link" href={INSTAGRAM_URL} target="_blank" rel="noreferrer"><Instagram size={15} /> Instagram</a><button type="button" onClick={() => setOrderOpen(true)}>Order Online</button></div><p>San Bernardino · Lawndale · California</p></footer>
+      <footer className="footer brand-footer"><div className="footer-mark"><UtensilsCrossed size={26} /><strong>MUERTO DE HAMBRE</strong><span>GRILL</span></div><div className="footer-links"><a href="#favorites">Food</a><a href="#story">Story</a><a href="/locations">Locations</a><a className="instagram-footer-link" href={INSTAGRAM_URL} target="_blank" rel="noreferrer"><Instagram size={15} /> Instagram</a><button type="button" onClick={() => setOrderOpen(true)}>Order Online</button></div><p>San Bernardino · Lawndale · California</p></footer>
       <button className="mobile-order-sticky" type="button" onClick={() => setOrderOpen(true)}><Flame size={17} fill="currentColor" />Order Online</button>
     </>
   );
