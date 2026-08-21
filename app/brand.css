@@ -131,20 +131,14 @@ body {
   background: linear-gradient(90deg, rgba(8,7,5,.96) 0%, rgba(8,7,5,.88) 40%, rgba(8,7,5,.38) 68%, rgba(8,7,5,.12) 100%);
 }
 
+/* The high-resolution header asset already contains the logo + mascot.
+   Do not layer the standalone mascot over it on the homepage hero. */
 .hero-mascot {
-  position: absolute;
-  z-index: 3;
-  right: clamp(-80px, -3vw, -20px);
-  bottom: -40px;
-  width: min(760px, 54vw);
-  max-height: 88%;
-  object-fit: contain;
-  object-position: bottom right;
-  filter: drop-shadow(0 25px 38px rgba(0,0,0,.55)) drop-shadow(0 0 24px rgba(224,166,54,.08));
-  pointer-events: none;
+  display: none !important;
 }
 
 .brand-hero-content {
+  position: relative;
   z-index: 5;
   max-width: 760px;
 }
@@ -427,7 +421,6 @@ body {
 
 @media (max-width: 1000px) {
   .brand-header-logo { width: 240px; }
-  .hero-mascot { right: -120px; width: 650px; opacity: .72; }
   .brand-hero .hero-shade { background: linear-gradient(90deg, rgba(8,7,5,.97) 0%, rgba(8,7,5,.91) 50%, rgba(8,7,5,.55) 78%, rgba(8,7,5,.28) 100%); }
 }
 
@@ -435,7 +428,6 @@ body {
   .brand-header { height: 78px; }
   .brand-header-logo { width: min(270px, 60vw); }
   .brand-hero { min-height: 900px; padding: 125px 24px 90px; align-items: end; }
-  .hero-mascot { right: -95px; top: 85px; bottom: auto; width: min(580px, 90vw); opacity: .42; }
   .brand-hero .hero-shade { background: linear-gradient(0deg, rgba(8,7,5,.97) 0%, rgba(8,7,5,.72) 55%, rgba(8,7,5,.38) 100%); }
   .hero-gold-orbit { right: -15vw; top: 34%; width: 78vw; }
   .orbit-two { right: -6vw; width: 60vw; }
@@ -444,7 +436,6 @@ body {
 
 @media (max-width: 650px) {
   .brand-hero { min-height: 100svh; }
-  .hero-mascot { right: -80px; top: 88px; width: 520px; opacity: .36; }
   .hero-logo { width: 94vw; max-width: 520px; margin-left: -7px; }
   .brand-hero h1 { font-size: clamp(4rem, 18vw, 6.2rem); }
   .brand-ticker span { font-size: 1rem; }
