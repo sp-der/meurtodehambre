@@ -1,10 +1,14 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import './brand.css';
 
 export const metadata: Metadata = {
   title: 'Muerto De Hambre Grill',
-  description: 'Muerto De Hambre Grill. Two Southern California locations, one serious appetite.',
+  description: 'Muerto De Hambre Grill. San Bernardino and Lawndale, California.',
   metadataBase: new URL('https://muertodehambre.com'),
+  icons: {
+    icon: '/favicon.png',
+  },
   openGraph: {
     title: 'Muerto De Hambre Grill',
     description: 'Come hungry.',
