@@ -60,9 +60,6 @@ export default function StorySection() {
           BUILT FROM A
           <span>NEW BEGINNING.</span>
         </h2>
-        <p>
-          Muerto De Hambre did not begin with a restaurant lease or a polished business plan. It began when Gio Bravo lost the job that had kept him in the same lane for years and decided the next chapter would be something he built himself.
-        </p>
       </motion.header>
 
       <div className={styles.timelineWrap}>
