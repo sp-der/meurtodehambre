@@ -2,7 +2,8 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight, Camera as Instagram, ChevronDown, Flame, MapPin, Menu, Send, UtensilsCrossed, X } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import Image from 'next/image';
+import { useEffect, useMemo, useState } from 'react';
 import StorySection from './StorySection';
 import { locations, type LocationKey, type RestaurantLocation } from '../lib/locations';
 
@@ -45,87 +46,69 @@ function PhotoCarousel({
   variant?: 'event' | 'food';
   reverse?: boolean;
 }) {
-  const carouselRef = useRef<HTMLElement>(null);
+  const [firstImage, setFirstImage] = useState(0);
+  const [isMoving, setIsMoving] = useState(false);
+  const windowSize = variant === 'food' ? 7 : 6;
+
+  const normalizeIndex = (index: number) => (index + images.length) % images.length;
+  const trackImages = Array.from({ length: windowSize }, (_, slot) => {
+    const trackStart = reverse ? firstImage - 1 : firstImage;
+    const imageIndex = normalizeIndex(trackStart + slot);
+    return { imageIndex, image: images[imageIndex] };
+  });
 
   useEffect(() => {
-    const carousel = carouselRef.current;
-    if (!carousel) return;
+    if (isMoving) return;
 
-    const mobile = window.matchMedia('(max-width: 650px)');
-    let animationFrame = 0;
-    let previousTime = 0;
-    let loopWidth = 0;
-
-    const measure = () => {
-      const track = carousel.querySelector<HTMLElement>('.photo-carousel-track');
-      const group = carousel.querySelector<HTMLElement>('.photo-carousel-group');
-      if (!track || !group) return;
-
-      const gap = Number.parseFloat(window.getComputedStyle(track).columnGap) || 0;
-      loopWidth = group.getBoundingClientRect().width + gap;
-      carousel.scrollLeft = reverse ? loopWidth : 0;
-    };
-
-    const move = (time: number) => {
-      if (!mobile.matches) return;
-      if (!previousTime) previousTime = time;
-
-      const elapsed = Math.min(time - previousTime, 50);
-      const pixelsPerSecond = variant === 'event' ? 42 : 62;
-      carousel.scrollLeft += (reverse ? -1 : 1) * pixelsPerSecond * (elapsed / 1000);
-
-      if (loopWidth > 0 && !reverse && carousel.scrollLeft >= loopWidth) {
-        carousel.scrollLeft -= loopWidth;
-      } else if (loopWidth > 0 && reverse && carousel.scrollLeft <= 0) {
-        carousel.scrollLeft += loopWidth;
-      }
-
-      previousTime = time;
-      animationFrame = window.requestAnimationFrame(move);
-    };
-
-    const start = () => {
-      window.cancelAnimationFrame(animationFrame);
-      previousTime = 0;
-
-      if (mobile.matches) {
-        measure();
-        animationFrame = window.requestAnimationFrame(move);
-      } else {
-        carousel.scrollLeft = 0;
-      }
-    };
-
-    start();
-    mobile.addEventListener('change', start);
+    let secondFrame = 0;
+    const firstFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => setIsMoving(true));
+    });
 
     return () => {
-      window.cancelAnimationFrame(animationFrame);
-      mobile.removeEventListener('change', start);
+      window.cancelAnimationFrame(firstFrame);
+      window.cancelAnimationFrame(secondFrame);
     };
-  }, [images.length, reverse, variant]);
+  }, [firstImage, isMoving]);
+
+  useEffect(() => {
+    if (!isMoving) return;
+
+    // WebKit can occasionally omit transitionend after a tab or iframe is
+    // throttled. Keep the carousel self-healing instead of leaving it frozen.
+    const recoveryTimer = window.setTimeout(() => {
+      setIsMoving(false);
+      setFirstImage((current) => normalizeIndex(current + (reverse ? -1 : 1)));
+    }, variant === 'food' ? 5000 : 6500);
+
+    return () => window.clearTimeout(recoveryTimer);
+  }, [images.length, isMoving, reverse, variant]);
+
+  const finishStep = (event: React.TransitionEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget || event.propertyName !== 'transform') return;
+
+    setIsMoving(false);
+    setFirstImage((current) => normalizeIndex(current + (reverse ? -1 : 1)));
+  };
 
   return (
-    <section ref={carouselRef} className={`photo-carousel photo-carousel-${variant} ${reverse ? 'photo-carousel-reverse' : ''}`} aria-label={label}>
-      <div className="photo-carousel-track">
-        {[false, true].map((duplicate) => (
-          <div
-            className="photo-carousel-group"
-            key={duplicate ? 'duplicate' : 'primary'}
-            aria-hidden={duplicate || undefined}
-          >
-            {images.map(([src, alt]) => (
-              <figure className="photo-carousel-card" key={`${src}-${duplicate ? 'duplicate' : 'primary'}`}>
-                <img
-                  src={src}
-                  alt={duplicate ? '' : alt}
-                  loading="eager"
-                  decoding="async"
-                  draggable={false}
-                />
-              </figure>
-            ))}
-          </div>
+    <section className={`photo-carousel photo-carousel-${variant} ${reverse ? 'photo-carousel-reverse' : ''}`} aria-label={label}>
+      <div
+        className={`photo-carousel-track ${isMoving ? 'photo-carousel-track-moving' : ''}`}
+        onTransitionEnd={finishStep}
+      >
+        {trackImages.map(({ imageIndex, image: [src, alt] }) => (
+          <figure className="photo-carousel-card" key={src}>
+            <Image
+              src={src}
+              alt={alt}
+              fill
+              sizes={variant === 'food' ? '(max-width: 650px) 66vw, 25vw' : '(max-width: 650px) 82vw, 35vw'}
+              loading="eager"
+              draggable={false}
+              data-image-index={imageIndex}
+            />
+          </figure>
         ))}
       </div>
     </section>

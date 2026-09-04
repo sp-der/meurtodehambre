@@ -601,7 +601,8 @@ a {
 /* Auto-scrolling photo galleries */
 .photo-carousel {
   --carousel-gap: 18px;
-  --carousel-duration: 30s;
+  --carousel-card-width: clamp(310px, 35vw, 540px);
+  --carousel-step-duration: 5.5s;
   width: 100%;
   overflow: hidden;
   background: #0d0c09;
@@ -615,7 +616,6 @@ a {
 }
 
 .photo-carousel-event {
-  --carousel-duration: 56s;
   padding: 28px 0 88px;
   border-top: 1px solid rgba(222, 176, 89, .18);
   border-bottom: 1px solid rgba(222, 176, 89, .2);
@@ -628,27 +628,26 @@ a {
   display: flex;
   width: max-content;
   gap: var(--carousel-gap);
-}
-
-.photo-carousel-group {
-  display: flex;
-  flex-shrink: 0;
-  gap: var(--carousel-gap);
-  animation: photo-carousel-forward var(--carousel-duration) linear infinite;
+  transform: translate3d(0, 0, 0);
   will-change: transform;
 }
 
-.photo-carousel-reverse {
-  --carousel-duration: 26s;
+.photo-carousel-track-moving {
+  transform: translate3d(calc(0px - var(--carousel-card-width) - var(--carousel-gap)), 0, 0);
+  transition: transform var(--carousel-step-duration) linear;
 }
 
-.photo-carousel-reverse .photo-carousel-group {
-  animation-name: photo-carousel-reverse;
+.photo-carousel-reverse .photo-carousel-track {
+  transform: translate3d(calc(0px - var(--carousel-card-width) - var(--carousel-gap)), 0, 0);
+}
+
+.photo-carousel-reverse .photo-carousel-track-moving {
+  transform: translate3d(0, 0, 0);
 }
 
 .photo-carousel-card {
   position: relative;
-  flex: 0 0 clamp(310px, 35vw, 540px);
+  flex: 0 0 var(--carousel-card-width);
   aspect-ratio: 4 / 3;
   overflow: hidden;
   margin: 0;
@@ -659,9 +658,13 @@ a {
 }
 
 .photo-carousel-food .photo-carousel-card {
-  flex-basis: clamp(230px, 25vw, 350px);
   aspect-ratio: 4 / 5;
   border-radius: 20px;
+}
+
+.photo-carousel-food {
+  --carousel-card-width: clamp(230px, 25vw, 350px);
+  --carousel-step-duration: 4s;
 }
 
 .photo-carousel-card img {
@@ -675,15 +678,6 @@ a {
 .photo-carousel-card:hover img {
   transform: scale(1.035);
   filter: saturate(1.08);
-}
-
-@keyframes photo-carousel-forward {
-  to { transform: translate3d(calc(-100% - var(--carousel-gap)), 0, 0); }
-}
-
-@keyframes photo-carousel-reverse {
-  from { transform: translate3d(calc(-100% - var(--carousel-gap)), 0, 0); }
-  to { transform: translate3d(0, 0, 0); }
 }
 
 /* Story */
@@ -1463,43 +1457,21 @@ a {
 
   .photo-carousel {
     --carousel-gap: 12px;
-    --carousel-duration: 24s;
+    --carousel-card-width: 82vw;
+    --carousel-step-duration: 5s;
   }
 
-  .photo-carousel-reverse {
-    --carousel-duration: 21s;
-  }
-
-  .photo-carousel-event {
-    --carousel-duration: 40s;
+  .photo-carousel-food {
+    --carousel-card-width: 66vw;
+    --carousel-step-duration: 3.2s;
   }
 
   .photo-carousel-card {
-    flex-basis: 82vw;
     border-radius: 18px;
   }
 
   .photo-carousel-food .photo-carousel-card {
-    flex-basis: 66vw;
     border-radius: 16px;
-  }
-
-  /* iOS Safari can drop images from very wide GPU-composited marquee layers.
-     Keep the cards in normal layout and let the component scroll this row. */
-  .photo-carousel {
-    overflow-x: auto;
-    overscroll-behavior-x: none;
-    scrollbar-width: none;
-    touch-action: pan-y;
-  }
-
-  .photo-carousel::-webkit-scrollbar {
-    display: none;
-  }
-
-  .photo-carousel-group {
-    animation: none !important;
-    will-change: auto;
   }
 
   .photo-carousel-card {
@@ -1616,8 +1588,7 @@ a {
     transition-duration: 0.01ms !important;
   }
 
-  .photo-carousel-group {
-    animation-duration: var(--carousel-duration) !important;
-    animation-iteration-count: infinite !important;
+  .photo-carousel-track-moving {
+    transition-duration: var(--carousel-step-duration) !important;
   }
 }
