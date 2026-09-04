@@ -8,7 +8,7 @@ import StorySection from './StorySection';
 import { locations, type LocationKey, type RestaurantLocation } from '../lib/locations';
 
 const INSTAGRAM_URL = 'https://www.instagram.com/muertodehambregrill/';
-const CATERING_EMAIL = 'muertodehambreinc@gmail.com';
+const CATERING_FALLBACK_EMAIL = 'muertodehambreinc@gmail.com';
 const reveal = { hidden: { opacity: 0, y: 42 }, visible: { opacity: 1, y: 0 } };
 const mapEmbedUrl = (query: string) => `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
 
@@ -154,12 +154,19 @@ function CateringModal({ open, onClose }: { open: boolean; onClose: () => void }
     event.preventDefault();
     setStatus('sending');
     const form = event.currentTarget;
+    const formData = new FormData(form);
 
     try {
-      const response = await fetch(`https://formsubmit.co/ajax/${CATERING_EMAIL}`, {
+      const response = await fetch('/api/catering', {
         method: 'POST',
-        headers: { Accept: 'application/json' },
-        body: new FormData(form),
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          name: formData.get('name'),
+          phone: formData.get('phone'),
+          estimated_guests: formData.get('estimated_guests'),
+          event_message: formData.get('event_message'),
+          honey: formData.get('_honey'),
+        }),
       });
       if (!response.ok) throw new Error('Request failed');
       form.reset();
@@ -186,11 +193,7 @@ function CateringModal({ open, onClose }: { open: boolean; onClose: () => void }
                 <button type="button" className="order-button catering-submit" onClick={onClose}>Done</button>
               </div>
             ) : (
-              <form className="catering-form" action={`https://formsubmit.co/${CATERING_EMAIL}`} method="POST" onSubmit={submitRequest}>
-                <input type="hidden" name="_subject" value="New Muerto De Hambre catering request" />
-                <input type="hidden" name="_template" value="table" />
-                <input type="hidden" name="_captcha" value="false" />
-                <input type="hidden" name="_next" value="https://muertodehambre.com/?catering=sent#catering" />
+              <form className="catering-form" action="/api/catering" method="POST" onSubmit={submitRequest}>
                 <label className="catering-honeypot" aria-hidden="true">Leave this empty<input type="text" name="_honey" tabIndex={-1} autoComplete="off" /></label>
 
                 <div className="catering-form-grid">
@@ -212,7 +215,7 @@ function CateringModal({ open, onClose }: { open: boolean; onClose: () => void }
                   </label>
                 </div>
 
-                {status === 'error' && <p className="catering-form-error" role="alert">We couldn’t send that request. Please try again or email <a href={`mailto:${CATERING_EMAIL}`}>{CATERING_EMAIL}</a>.</p>}
+                {status === 'error' && <p className="catering-form-error" role="alert">We couldn’t send that request. Please try again or email <a href={`mailto:${CATERING_FALLBACK_EMAIL}`}>{CATERING_FALLBACK_EMAIL}</a>.</p>}
                 <button type="submit" className="order-button catering-submit" disabled={status === 'sending'}>{status === 'sending' ? 'Sending…' : 'Send catering request'}<Send size={17} /></button>
               </form>
             )}
