@@ -115,6 +115,7 @@ function CateringModal({ open, onClose }: { open: boolean; onClose: () => void }
           name: formData.get('name'),
           phone: formData.get('phone'),
           estimated_guests: formData.get('estimated_guests'),
+          event_date: formData.get('event_date'),
           event_message: formData.get('event_message'),
           honey: formData.get('_honey'),
         }),
@@ -156,7 +157,11 @@ function CateringModal({ open, onClose }: { open: boolean; onClose: () => void }
                     <span>Phone number</span>
                     <input type="tel" name="phone" autoComplete="tel" inputMode="tel" required />
                   </label>
-                  <label className="catering-field catering-field-full">
+                  <label className="catering-field">
+                    <span>Date of event</span>
+                    <input type="date" name="event_date" required />
+                  </label>
+                  <label className="catering-field">
                     <span>Expected guest amount <small>(estimate)</small></span>
                     <input type="number" name="estimated_guests" min="1" inputMode="numeric" required />
                   </label>
