@@ -98,12 +98,10 @@ function PhotoCarousel({
 
     start();
     mobile.addEventListener('change', start);
-    window.addEventListener('resize', start);
 
     return () => {
       window.cancelAnimationFrame(animationFrame);
       mobile.removeEventListener('change', start);
-      window.removeEventListener('resize', start);
     };
   }, [images.length, reverse, variant]);
 
