@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight, Camera as Instagram, ChevronDown, Flame, MapPin, Menu, Send, UtensilsCrossed, X } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import StorySection from './StorySection';
 import { locations, type LocationKey, type RestaurantLocation } from '../lib/locations';
 
@@ -45,8 +45,70 @@ function PhotoCarousel({
   variant?: 'event' | 'food';
   reverse?: boolean;
 }) {
+  const carouselRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    const mobile = window.matchMedia('(max-width: 650px)');
+    let animationFrame = 0;
+    let previousTime = 0;
+    let loopWidth = 0;
+
+    const measure = () => {
+      const track = carousel.querySelector<HTMLElement>('.photo-carousel-track');
+      const group = carousel.querySelector<HTMLElement>('.photo-carousel-group');
+      if (!track || !group) return;
+
+      const gap = Number.parseFloat(window.getComputedStyle(track).columnGap) || 0;
+      loopWidth = group.getBoundingClientRect().width + gap;
+      carousel.scrollLeft = reverse ? loopWidth : 0;
+    };
+
+    const move = (time: number) => {
+      if (!mobile.matches) return;
+      if (!previousTime) previousTime = time;
+
+      const elapsed = Math.min(time - previousTime, 50);
+      const pixelsPerSecond = variant === 'event' ? 42 : 62;
+      carousel.scrollLeft += (reverse ? -1 : 1) * pixelsPerSecond * (elapsed / 1000);
+
+      if (loopWidth > 0 && !reverse && carousel.scrollLeft >= loopWidth) {
+        carousel.scrollLeft -= loopWidth;
+      } else if (loopWidth > 0 && reverse && carousel.scrollLeft <= 0) {
+        carousel.scrollLeft += loopWidth;
+      }
+
+      previousTime = time;
+      animationFrame = window.requestAnimationFrame(move);
+    };
+
+    const start = () => {
+      window.cancelAnimationFrame(animationFrame);
+      previousTime = 0;
+
+      if (mobile.matches) {
+        measure();
+        animationFrame = window.requestAnimationFrame(move);
+      } else {
+        carousel.scrollLeft = 0;
+      }
+    };
+
+    start();
+    mobile.addEventListener('change', start);
+    window.addEventListener('resize', start);
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      mobile.removeEventListener('change', start);
+      window.removeEventListener('resize', start);
+    };
+  }, [images.length, reverse, variant]);
+
   return (
-    <section className={`photo-carousel photo-carousel-${variant} ${reverse ? 'photo-carousel-reverse' : ''}`} aria-label={label}>
+    <section ref={carouselRef} className={`photo-carousel photo-carousel-${variant} ${reverse ? 'photo-carousel-reverse' : ''}`} aria-label={label}>
       <div className="photo-carousel-track">
         {[false, true].map((duplicate) => (
           <div

@@ -1484,6 +1484,27 @@ a {
     border-radius: 16px;
   }
 
+  /* iOS Safari can drop images from very wide GPU-composited marquee layers.
+     Keep the cards in normal layout and let the component scroll this row. */
+  .photo-carousel {
+    overscroll-behavior-x: none;
+    touch-action: pan-y;
+  }
+
+  .photo-carousel-group {
+    animation: none !important;
+    will-change: auto;
+  }
+
+  .photo-carousel-card {
+    contain: paint;
+  }
+
+  .photo-carousel-card:hover img {
+    transform: none;
+    filter: none;
+  }
+
   .story-image {
     min-height: 430px;
   }
