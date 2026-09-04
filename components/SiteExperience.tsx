@@ -13,16 +13,11 @@ const reveal = { hidden: { opacity: 0, y: 42 }, visible: { opacity: 1, y: 0 } };
 const mapEmbedUrl = (query: string) => `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
 
 const eventPhotos = [
-  ['/gallery/events/dsc-2071.webp', 'Serving from the Muerto De Hambre food truck'],
-  ['/gallery/events/dsc-2084.webp', 'Guests ordering at the Muerto De Hambre food truck'],
-  ['/gallery/events/dsc-2151.webp', 'Muerto De Hambre food and drinks at an event'],
-  ['/gallery/events/dsc-2167.webp', 'Friends sharing a Muerto De Hambre meal'],
-  ['/gallery/events/dsc-2179.webp', 'A guest enjoying the Muerto De Hambre experience'],
-  ['/gallery/events/dsc-2180.webp', 'Muerto De Hambre food served at a community event'],
-  ['/gallery/events/dsc-5227.webp', 'Muerto De Hambre community moment'],
-  ['/gallery/events/dsc-5275.webp', 'Muerto De Hambre event celebration'],
-  ['/gallery/events/dsc-5302.webp', 'The Muerto De Hambre food truck in action'],
   ['/gallery/events/dsc-5331.webp', 'A spread of Muerto De Hambre favorites'],
+  ['/gallery/events/dsc-5227.webp', 'Muerto De Hambre community moment'],
+  ['/gallery/events/dsc-2071.webp', 'Serving from the Muerto De Hambre food truck'],
+  ['/gallery/events/new1.webp', 'Muerto De Hambre event moment'],
+  ['/gallery/events/new2.webp', 'Muerto De Hambre event moment'],
 ] as const;
 
 const foodPhotos = [
@@ -133,7 +128,7 @@ function FireIntro() {
             transition={{ duration: 1.45, times: [0, 0.3, 0.55, 0.78, 1], ease: 'easeInOut' }}
           >
             <img src="/brand/skull.webp" alt="Muerto De Hambre Grill skull logo" className="intro-skull" />
-            <img src="/brand/phillipians.webp" alt="Philippians 4:13" className="intro-verse" />
+            <img src="/brand/phillipians.webp" alt="Philippians 4:13" className="intro-verse" style={{ width: 'min(380px, 62vw)' }} />
           </motion.div>
         </motion.div>
       )}
@@ -321,7 +316,7 @@ export default function SiteExperience() {
             <span className="eyebrow">THE FIRST BITE</span><h2>LOUD FLAVOR.<br />NO APOLOGIES.</h2>
           </motion.div>
           <div className="food-grid">
-            {[['food-card-large food-one','01','Signature Plates','Hero-worthy plates belong here.'],['food-two','02','Grill Favorites','Char, crunch, sauce, repeat.'],['food-three','03','Hambre Favorites','The dishes regulars come back for.']].map(([extra, num, title, copy], index) => (
+            {[['food-card-large food-one','01','Signature Plates','Hero-worthy plates belong here.'],['food-two','02','Grill Favorites','Char, crunch, sauce, repeat.'],['food-three','03','MDH Favorites','The dishes regulars come back for.']].map(([extra, num, title, copy], index) => (
               <motion.article key={num} className={`food-card ${extra}`} variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6, delay: index * 0.07 }}><div className="food-card-overlay" /><div className="food-copy"><span>{num}</span><h3>{title}</h3><p>{copy}</p></div></motion.article>
             ))}
           </div>
