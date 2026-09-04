@@ -26,10 +26,16 @@
   isolation: isolate;
 }
 
-/* Food row keeps the original smaller-card proportions. */
+/* Food row keeps the original smaller-card proportions, but breaks out of
+   the padded favorites section so it reaches both viewport edges exactly
+   like the event carousel below it. */
 .photo-carousel-food {
   --carousel-card-width: clamp(230px, 25vw, 350px);
   --carousel-duration: 18s;
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 
 /* Bottom event row uses the original larger-card proportions. */
@@ -138,6 +144,8 @@
   .photo-carousel-food {
     --carousel-card-width: 66vw;
     --carousel-duration: 15s;
+    width: 100vw;
+    max-width: 100vw;
   }
 
   .photo-carousel-event {
