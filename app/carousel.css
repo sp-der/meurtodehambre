@@ -1,0 +1,52 @@
+/* Seamless, continuously looping photo carousels. */
+.photo-carousel {
+  --carousel-loop-duration: 34s;
+}
+
+.photo-carousel-food {
+  --carousel-loop-duration: 38s;
+}
+
+.photo-carousel-track,
+.photo-carousel-reverse .photo-carousel-track {
+  display: flex;
+  width: max-content;
+  gap: 0;
+  transform: translate3d(0, 0, 0);
+  animation: mdh-carousel-loop var(--carousel-loop-duration) linear infinite;
+  will-change: transform;
+}
+
+.photo-carousel-reverse .photo-carousel-track {
+  animation-direction: reverse;
+}
+
+.photo-carousel-set {
+  display: flex;
+  flex: none;
+  gap: var(--carousel-gap);
+  padding-right: var(--carousel-gap);
+}
+
+@keyframes mdh-carousel-loop {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@media (max-width: 650px) {
+  .photo-carousel {
+    --carousel-loop-duration: 31s;
+  }
+
+  .photo-carousel-food {
+    --carousel-loop-duration: 35s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-carousel-track,
+  .photo-carousel-reverse .photo-carousel-track {
+    animation: none;
+    transform: translate3d(0, 0, 0);
+  }
+}
