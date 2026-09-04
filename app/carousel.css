@@ -20,7 +20,7 @@
 .photo-carousel {
   --carousel-gap: 18px;
   --carousel-card-width: clamp(310px, 35vw, 540px);
-  --carousel-duration: 14s;
+  --carousel-duration: 17s;
   width: 100%;
   overflow: hidden;
   isolation: isolate;
@@ -29,13 +29,13 @@
 /* Food row keeps the original smaller-card proportions. */
 .photo-carousel-food {
   --carousel-card-width: clamp(230px, 25vw, 350px);
-  --carousel-duration: 15s;
+  --carousel-duration: 18s;
 }
 
 /* Bottom event row uses the original larger-card proportions. */
 .photo-carousel-event {
   --carousel-card-width: clamp(310px, 35vw, 540px);
-  --carousel-duration: 13s;
+  --carousel-duration: 16s;
 }
 
 /*
@@ -137,12 +137,12 @@
 
   .photo-carousel-food {
     --carousel-card-width: 66vw;
-    --carousel-duration: 12s;
+    --carousel-duration: 15s;
   }
 
   .photo-carousel-event {
     --carousel-card-width: 82vw;
-    --carousel-duration: 11s;
+    --carousel-duration: 14s;
   }
 
   .photo-carousel .photo-carousel-card {
