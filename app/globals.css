@@ -558,9 +558,9 @@ a {
   grid-row: 1 / 3;
 }
 
-.food-one { background-image: url('https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?auto=format&fit=crop&w=1400&q=84'); }
-.food-two { background-image: url('https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?auto=format&fit=crop&w=1200&q=84'); }
-.food-three { background-image: url('https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=1200&q=84'); }
+.food-one { background-image: url('/gallery/food/signature.webp'); }
+.food-two { background-image: url('/gallery/food/grill-favorites.webp'); }
+.food-three { background-image: url('/gallery/food/hambre-favorites.webp'); }
 
 .food-card-overlay {
   position: absolute;
@@ -596,6 +596,88 @@ a {
   margin: 0;
   color: rgba(255,255,255,.7);
   font-size: .75rem;
+}
+
+/* Auto-scrolling photo galleries */
+.photo-carousel {
+  width: 100%;
+  overflow: hidden;
+  background: #0d0c09;
+}
+
+.photo-carousel-food {
+  width: 100vw;
+  margin: 62px calc(50% - 50vw) -42px;
+  padding: 18px 0 10px;
+  background: transparent;
+}
+
+.photo-carousel-event {
+  padding: 28px 0 88px;
+  border-top: 1px solid rgba(222, 176, 89, .18);
+  border-bottom: 1px solid rgba(222, 176, 89, .2);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(214, 164, 72, .09), transparent 34%),
+    #0d0c09;
+}
+
+.photo-carousel-track {
+  display: flex;
+  width: max-content;
+  gap: 18px;
+  padding-inline: 9px;
+  animation: photo-carousel-forward 46s linear infinite;
+  will-change: transform;
+}
+
+.photo-carousel-reverse .photo-carousel-track {
+  animation-name: photo-carousel-reverse;
+  animation-duration: 38s;
+}
+
+.photo-carousel:hover .photo-carousel-track,
+.photo-carousel:focus-within .photo-carousel-track {
+  animation-play-state: paused;
+}
+
+.photo-carousel-card {
+  position: relative;
+  flex: 0 0 clamp(310px, 35vw, 540px);
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid rgba(225, 179, 91, .42);
+  border-radius: 24px;
+  background: #17140f;
+  box-shadow: 0 20px 50px rgba(0,0,0,.28);
+}
+
+.photo-carousel-food .photo-carousel-card {
+  flex-basis: clamp(230px, 25vw, 350px);
+  aspect-ratio: 4 / 5;
+  border-radius: 20px;
+}
+
+.photo-carousel-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 600ms cubic-bezier(.2,.8,.2,1), filter 250ms ease;
+}
+
+.photo-carousel-card:hover img {
+  transform: scale(1.035);
+  filter: saturate(1.08);
+}
+
+@keyframes photo-carousel-forward {
+  to { transform: translateX(calc(-50% - 9px)); }
+}
+
+@keyframes photo-carousel-reverse {
+  from { transform: translateX(calc(-50% - 9px)); }
+  to { transform: translateX(0); }
 }
 
 /* Story */
@@ -984,6 +1066,136 @@ a {
   line-height: 1.5;
 }
 
+/* Catering request modal */
+.catering-form-trigger {
+  border-color: rgba(255,255,255,.56);
+  cursor: pointer;
+}
+
+.catering-modal {
+  width: min(760px, 100%);
+}
+
+.catering-modal h2 {
+  max-width: 650px;
+  font-size: clamp(3.5rem, 6.5vw, 6rem);
+}
+
+.catering-form {
+  position: relative;
+  margin-top: 32px;
+}
+
+.catering-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.catering-field {
+  display: grid;
+  gap: 8px;
+}
+
+.catering-field-full {
+  grid-column: 1 / -1;
+}
+
+.catering-field > span {
+  color: #e4c27c;
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.catering-field small {
+  color: #8f8064;
+  font-size: inherit;
+  font-weight: 700;
+}
+
+.catering-field input,
+.catering-field textarea {
+  width: 100%;
+  border: 1px solid rgba(227, 181, 91, .28);
+  border-radius: 12px;
+  padding: 14px 15px;
+  outline: none;
+  background: rgba(255,255,255,.045);
+  color: #fff7e4;
+  font: inherit;
+  font-size: 1rem;
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.catering-field textarea {
+  min-height: 130px;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.catering-field input:focus,
+.catering-field textarea:focus {
+  border-color: #d9a847;
+  background: rgba(255,255,255,.07);
+  box-shadow: 0 0 0 3px rgba(217,168,71,.13);
+}
+
+.catering-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.catering-submit {
+  min-height: 52px;
+  margin-top: 20px;
+  padding: 0 22px;
+}
+
+.catering-submit:disabled {
+  cursor: wait;
+  opacity: .65;
+}
+
+.catering-form-error {
+  margin: 16px 0 0;
+  color: #ffb08f;
+  font-size: .78rem;
+  line-height: 1.55;
+}
+
+.catering-form-error a {
+  text-decoration: underline;
+}
+
+.catering-success {
+  margin-top: 32px;
+  border: 1px solid rgba(223,176,85,.35);
+  border-radius: 20px;
+  padding: 30px;
+  background: rgba(217,168,71,.07);
+}
+
+.catering-success h3 {
+  margin: 0;
+  font-family: var(--western), var(--display);
+  color: #fff2d0;
+  font-size: clamp(2.8rem, 6vw, 4.6rem);
+  font-weight: 400;
+  line-height: .95;
+}
+
+.catering-success p {
+  margin: 12px 0 0;
+  color: #b7aa8e;
+  font-size: .86rem;
+  line-height: 1.7;
+}
+
 /* Footer */
 .footer {
   display: grid;
@@ -1234,6 +1446,30 @@ a {
     min-height: 290px;
   }
 
+  .photo-carousel-food {
+    margin-top: 45px;
+    margin-bottom: -22px;
+  }
+
+  .photo-carousel-event {
+    padding: 20px 0 62px;
+  }
+
+  .photo-carousel-track {
+    gap: 12px;
+    padding-inline: 6px;
+  }
+
+  .photo-carousel-card {
+    flex-basis: 82vw;
+    border-radius: 18px;
+  }
+
+  .photo-carousel-food .photo-carousel-card {
+    flex-basis: 66vw;
+    border-radius: 16px;
+  }
+
   .story-image {
     min-height: 430px;
   }
@@ -1271,6 +1507,22 @@ a {
   .order-modal h2 {
     padding-right: 36px;
     font-size: clamp(3.7rem, 18vw, 5.5rem);
+  }
+
+  .catering-modal h2 {
+    font-size: clamp(3rem, 14.5vw, 4.6rem);
+  }
+
+  .catering-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .catering-field-full {
+    grid-column: auto;
+  }
+
+  .catering-submit {
+    width: 100%;
   }
 
   .location-choice {
