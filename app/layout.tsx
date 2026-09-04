@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import './brand.css';
 import './quality.css';
+import './carousel.css';
 
 const mestizo = localFont({
   src: './fonts/MestizoFont.ttf',
