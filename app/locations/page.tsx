@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowLeft, ArrowUpRight, Clock3, MapPin } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, ChevronDown, Clock3, MapPin } from 'lucide-react';
 import { locations } from '../../lib/locations';
 import styles from './locations.module.css';
 
@@ -51,18 +51,23 @@ export default function LocationsPage() {
               />
             </div>
 
-            <div className={styles.hours}>
-              <div className={styles.hoursTitle}><Clock3 size={17} /> Weekly schedule</div>
-              {location.hours.map((row) => (
-                <div className={styles.hourRow} key={row.days}>
-                  <span>{row.days}</span>
-                  <div>
-                    <strong>{row.hours}</strong>
-                    {row.note && <small>{row.note}</small>}
+            <details className={styles.hours}>
+              <summary className={styles.hoursTitle}>
+                <span><Clock3 size={17} /> Weekly schedule</span>
+                <ChevronDown className={styles.hoursChevron} size={19} aria-hidden="true" />
+              </summary>
+              <div className={styles.hoursBody}>
+                {location.hours.map((row) => (
+                  <div className={styles.hourRow} key={row.days}>
+                    <span>{row.days}</span>
+                    <div>
+                      <strong>{row.hours}</strong>
+                      {row.note && <small>{row.note}</small>}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            </details>
 
             <div className={styles.delivery}>
               <span>Delivery options</span>
