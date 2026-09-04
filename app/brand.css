@@ -16,6 +16,30 @@ body {
   background: #11100d;
 }
 
+/* One continuous supplied backdrop behind every homepage panel. */
+.site-backdrop {
+  position: relative;
+  isolation: isolate;
+  background: #0d0c09;
+}
+
+.site-backdrop-art {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-image: url('/brand/backdrop.webp');
+  background-position: center top;
+  background-repeat: repeat-y;
+  background-size: max(1200px, 100vw) auto;
+  opacity: .2;
+  pointer-events: none;
+}
+
+.site-backdrop > section {
+  position: relative;
+  z-index: 1;
+}
+
 .order-button,
 .ignite-button,
 .mobile-order-sticky {
@@ -100,19 +124,7 @@ body {
   padding: 150px 7vw 95px;
   background:
     radial-gradient(circle at 75% 52%, rgba(211,155,54,.13), transparent 30%),
-    #11100d;
-}
-
-.hero-backdrop-art {
-  position: absolute;
-  z-index: 0;
-  inset: -8%;
-  width: 116%;
-  height: 116%;
-  object-fit: cover;
-  object-position: center;
-  opacity: .19;
-  pointer-events: none;
+    rgba(17,16,13,.68);
 }
 
 .hero-outline-art {
@@ -206,7 +218,7 @@ body {
 /* Ticker */
 .brand-ticker {
   border-color: #7c561f;
-  background: #d8a64b;
+  background: rgba(216,166,75,.92);
   color: #201505;
 }
 
@@ -221,7 +233,21 @@ body {
   background:
     radial-gradient(circle at 86% 5%, rgba(214,164,72,.1), transparent 26%),
     repeating-linear-gradient(45deg, transparent 0 31px, rgba(211,160,66,.035) 31px 33px, transparent 33px 62px),
-    #15130f;
+    rgba(21,19,15,.76);
+}
+
+.site-backdrop .photo-carousel {
+  background-color: transparent;
+}
+
+.site-backdrop .photo-carousel-event {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(214,164,72,.09), transparent 34%),
+    rgba(13,12,9,.7);
+}
+
+.site-backdrop .story-band {
+  background: rgba(247,232,194,.94);
 }
 
 .brand-favorites .section-heading .eyebrow,
@@ -263,7 +289,7 @@ body {
   background:
     radial-gradient(circle at 50% 50%, rgba(206,151,51,.14), transparent 36%),
     repeating-linear-gradient(-45deg, transparent 0 33px, rgba(205,153,60,.035) 33px 35px, transparent 35px 66px),
-    #0d0c09;
+    rgba(13,12,9,.74);
 }
 
 .brand-order-callout .order-callout-inner {
@@ -297,6 +323,10 @@ body {
   border-bottom: 1px solid rgba(220,173,81,.24);
 }
 
+.brand-catering .catering-photo {
+  opacity: .9;
+}
+
 .brand-catering .catering-shade {
   background:
     linear-gradient(90deg, rgba(10,9,7,.96) 0%, rgba(10,9,7,.74) 50%, rgba(10,9,7,.22) 84%),
@@ -311,7 +341,7 @@ body {
 .brand-locations-preview {
   background:
     radial-gradient(circle at 50% 0%, rgba(216,164,70,.09), transparent 32%),
-    #13110e;
+    rgba(19,17,14,.78);
   color: #f8edd2;
 }
 

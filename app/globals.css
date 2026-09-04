@@ -601,7 +601,7 @@ a {
 /* Auto-scrolling photo galleries */
 .photo-carousel {
   --carousel-gap: 18px;
-  --carousel-half-gap: 9px;
+  --carousel-duration: 30s;
   width: 100%;
   overflow: hidden;
   background: #0d0c09;
@@ -627,19 +627,22 @@ a {
   display: flex;
   width: max-content;
   gap: var(--carousel-gap);
-  animation: photo-carousel-forward 46s linear infinite;
-  will-change: transform;
 }
 
 .photo-carousel-group {
   display: flex;
   flex-shrink: 0;
   gap: var(--carousel-gap);
+  animation: photo-carousel-forward var(--carousel-duration) linear infinite;
+  will-change: transform;
 }
 
-.photo-carousel-reverse .photo-carousel-track {
+.photo-carousel-reverse {
+  --carousel-duration: 26s;
+}
+
+.photo-carousel-reverse .photo-carousel-group {
   animation-name: photo-carousel-reverse;
-  animation-duration: 38s;
 }
 
 .photo-carousel-card {
@@ -674,12 +677,12 @@ a {
 }
 
 @keyframes photo-carousel-forward {
-  to { transform: translateX(calc(-50% - var(--carousel-half-gap))); }
+  to { transform: translate3d(calc(-100% - var(--carousel-gap)), 0, 0); }
 }
 
 @keyframes photo-carousel-reverse {
-  from { transform: translateX(calc(-50% - var(--carousel-half-gap))); }
-  to { transform: translateX(0); }
+  from { transform: translate3d(calc(-100% - var(--carousel-gap)), 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
 }
 
 /* Story */
@@ -1459,7 +1462,11 @@ a {
 
   .photo-carousel {
     --carousel-gap: 12px;
-    --carousel-half-gap: 6px;
+    --carousel-duration: 24s;
+  }
+
+  .photo-carousel-reverse {
+    --carousel-duration: 21s;
   }
 
   .photo-carousel-card {
@@ -1575,5 +1582,10 @@ a {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .photo-carousel-group {
+    animation-duration: var(--carousel-duration) !important;
+    animation-iteration-count: infinite !important;
   }
 }

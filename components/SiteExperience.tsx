@@ -279,9 +279,9 @@ export default function SiteExperience() {
   return (
     <>
       <FireIntro /><Header onOrder={() => setOrderOpen(true)} /><OrderModal open={orderOpen} onClose={() => setOrderOpen(false)} /><CateringModal open={cateringOpen} onClose={() => setCateringOpen(false)} />
-      <main id="top">
+      <main id="top" className="site-backdrop">
+        <div className="site-backdrop-art" aria-hidden="true" />
         <section className="hero brand-hero">
-          <img src="/brand/backdrop.webp" alt="" aria-hidden="true" className="hero-backdrop-art" />
           <motion.img src="/brand/outline.webp" alt="" aria-hidden="true" className="hero-outline-art" initial={{ opacity: 0, x: 60, scale: 0.94 }} animate={{ opacity: 0.72, x: 0, scale: 1 }} transition={{ duration: 1, delay: 0.1 }} />
           <div className="hero-gold-orbit orbit-one" aria-hidden="true" /><div className="hero-gold-orbit orbit-two" aria-hidden="true" /><div className="hero-shade" /><div className="hero-grain" />
           <motion.div className="hero-content brand-hero-content" initial={{ opacity: 0, y: 34 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.18 }}>
