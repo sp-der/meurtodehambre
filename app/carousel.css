@@ -1,68 +1,151 @@
-/* True seamless marquee carousels.
-   The track stays still. Each identical set moves by exactly its own width,
-   so the handoff is pixel-perfect and the cards never pile on each other. */
+/*
+  Muerto De Hambre photo marquees
+  --------------------------------
+  This intentionally replaces every previous carousel-motion rule.
+
+  DOM shape:
+    .photo-carousel
+      .photo-carousel-track
+        .photo-carousel-set   (copy 1)
+        .photo-carousel-set   (copy 2)
+
+  Both sets are pixel-identical. The TRACK moves exactly 50% of its total
+  width, which is exactly one complete set. At the loop boundary the second
+  set occupies the exact position of the first, so there is no visual reset.
+
+  IMPORTANT: the sets themselves never animate. Animating both sets was the
+  source of the crowded / doubled-looking behavior on iOS.
+*/
+
 .photo-carousel {
-  --carousel-loop-duration: 11s;
-  --carousel-gap: 22px;
+  --carousel-gap: 18px;
+  --carousel-card-width: clamp(310px, 35vw, 540px);
+  --carousel-duration: 14s;
+  width: 100%;
+  overflow: hidden;
+  isolation: isolate;
 }
 
+/* Food row keeps the original smaller-card proportions. */
 .photo-carousel-food {
-  --carousel-loop-duration: 13s;
+  --carousel-card-width: clamp(230px, 25vw, 350px);
+  --carousel-duration: 15s;
 }
 
-.photo-carousel-track,
-.photo-carousel-reverse .photo-carousel-track {
-  display: flex;
-  width: max-content;
-  gap: 0;
-  transform: none !important;
-  animation: none !important;
-  will-change: auto;
+/* Bottom event row uses the original larger-card proportions. */
+.photo-carousel-event {
+  --carousel-card-width: clamp(310px, 35vw, 540px);
+  --carousel-duration: 13s;
 }
 
-.photo-carousel-set {
-  display: flex;
-  flex: none;
-  gap: var(--carousel-gap) !important;
-  padding-right: var(--carousel-gap) !important;
-  transform: translate3d(-100%, 0, 0);
-  animation-name: mdh-carousel-set-loop !important;
-  animation-duration: var(--carousel-loop-duration) !important;
-  animation-timing-function: linear !important;
-  animation-iteration-count: infinite !important;
-  animation-play-state: running !important;
+/*
+  One continuous strip containing two identical sets.
+  There is deliberately NO gap on the outer track. The right padding on each
+  set creates one consistent gap at the handoff between set 1 and set 2.
+*/
+.photo-carousel .photo-carousel-track,
+.photo-carousel.photo-carousel-reverse .photo-carousel-track {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch;
+  width: max-content !important;
+  min-width: max-content !important;
+  gap: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
   will-change: transform;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
 }
 
-.photo-carousel-card {
+/*
+  A set is only layout. It never transforms or animates independently.
+  This is what prevents duplicate cards from drifting on top of each other.
+*/
+.photo-carousel .photo-carousel-set {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch;
+  gap: var(--carousel-gap) !important;
   margin: 0 !important;
-  flex-shrink: 0 !important;
+  padding: 0 var(--carousel-gap) 0 0 !important;
+  transform: none !important;
+  animation: none !important;
+  will-change: auto !important;
 }
 
-@keyframes mdh-carousel-set-loop {
-  from { transform: translate3d(-100%, 0, 0); }
-  to { transform: translate3d(0, 0, 0); }
+.photo-carousel .photo-carousel-card {
+  position: relative;
+  flex: 0 0 var(--carousel-card-width) !important;
+  width: var(--carousel-card-width) !important;
+  max-width: var(--carousel-card-width) !important;
+  min-width: var(--carousel-card-width) !important;
+  margin: 0 !important;
+  transform: none;
 }
 
-/* Make the Philippians mark visibly smaller on the intro. */
+.photo-carousel .photo-carousel-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* FOOD: move continuously to the RIGHT. */
+.photo-carousel-food .photo-carousel-track,
+.photo-carousel-food.photo-carousel-reverse .photo-carousel-track {
+  animation: mdh-food-carousel-right var(--carousel-duration) linear infinite !important;
+}
+
+@keyframes mdh-food-carousel-right {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* EVENTS / bottom row: move continuously to the LEFT. */
+.photo-carousel-event .photo-carousel-track,
+.photo-carousel-event.photo-carousel-reverse .photo-carousel-track {
+  animation: mdh-event-carousel-left var(--carousel-duration) linear infinite !important;
+}
+
+@keyframes mdh-event-carousel-left {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Keep the Philippians mark at the smaller approved intro scale. */
 .intro-verse {
   width: min(250px, 40vw) !important;
   max-width: 40vw !important;
 }
 
 @media (max-width: 650px) {
+  /* Restore the original mobile breathing room between cards. */
   .photo-carousel {
-    --carousel-loop-duration: 9s;
-    --carousel-gap: 20px;
+    --carousel-gap: 12px;
   }
 
   .photo-carousel-food {
-    --carousel-loop-duration: 11s;
+    --carousel-card-width: 66vw;
+    --carousel-duration: 12s;
   }
 
-  .photo-carousel-card {
+  .photo-carousel-event {
+    --carousel-card-width: 82vw;
+    --carousel-duration: 11s;
+  }
+
+  .photo-carousel .photo-carousel-card {
     box-shadow: 0 16px 38px rgba(0, 0, 0, 0.36) !important;
   }
 
@@ -73,14 +156,19 @@
   }
 }
 
-/* The site has a global reduced-motion override. Keep these two marquees moving
-   because they are an intentional content carousel, not a decorative entrance. */
+/*
+  The main stylesheet globally collapses animations when Reduce Motion is on.
+  These two marquees are content navigation rather than entrance decoration,
+  so keep their deliberate continuous movement and direction intact.
+*/
 @media (prefers-reduced-motion: reduce) {
-  .photo-carousel-set {
-    animation-name: mdh-carousel-set-loop !important;
-    animation-duration: var(--carousel-loop-duration) !important;
-    animation-timing-function: linear !important;
-    animation-iteration-count: infinite !important;
-    animation-play-state: running !important;
+  .photo-carousel-food .photo-carousel-track,
+  .photo-carousel-food.photo-carousel-reverse .photo-carousel-track {
+    animation: mdh-food-carousel-right var(--carousel-duration) linear infinite !important;
+  }
+
+  .photo-carousel-event .photo-carousel-track,
+  .photo-carousel-event.photo-carousel-reverse .photo-carousel-track {
+    animation: mdh-event-carousel-left var(--carousel-duration) linear infinite !important;
   }
 }
