@@ -1,10 +1,12 @@
-/* Seamless, continuously looping photo carousels. */
+/* Seamless, continuously looping photo carousels.
+   Each track contains two identical image sets. The track moves exactly one
+   set-width, so the reset lands on the same visual frame with no visible jump. */
 .photo-carousel {
-  --carousel-loop-duration: 34s;
+  --carousel-loop-duration: 14s;
 }
 
 .photo-carousel-food {
-  --carousel-loop-duration: 38s;
+  --carousel-loop-duration: 16s;
 }
 
 .photo-carousel-track,
@@ -12,13 +14,10 @@
   display: flex;
   width: max-content;
   gap: 0;
-  transform: translate3d(0, 0, 0);
-  animation: mdh-carousel-loop var(--carousel-loop-duration) linear infinite;
+  transform: translate3d(-50%, 0, 0);
+  animation: mdh-carousel-loop-right var(--carousel-loop-duration) linear infinite;
   will-change: transform;
-}
-
-.photo-carousel-reverse .photo-carousel-track {
-  animation-direction: reverse;
+  backface-visibility: hidden;
 }
 
 .photo-carousel-set {
@@ -28,25 +27,29 @@
   padding-right: var(--carousel-gap);
 }
 
-@keyframes mdh-carousel-loop {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-50%, 0, 0); }
+@keyframes mdh-carousel-loop-right {
+  from { transform: translate3d(-50%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
 }
 
 @media (max-width: 650px) {
   .photo-carousel {
-    --carousel-loop-duration: 31s;
+    --carousel-loop-duration: 11s;
   }
 
   .photo-carousel-food {
-    --carousel-loop-duration: 35s;
+    --carousel-loop-duration: 13s;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .photo-carousel-track,
   .photo-carousel-reverse .photo-carousel-track {
-    animation: none;
-    transform: translate3d(0, 0, 0);
+    animation-duration: 28s;
+  }
+
+  .photo-carousel-food .photo-carousel-track,
+  .photo-carousel-food.photo-carousel-reverse .photo-carousel-track {
+    animation-duration: 32s;
   }
 }
