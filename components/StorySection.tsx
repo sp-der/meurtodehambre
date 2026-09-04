@@ -109,7 +109,7 @@ export default function StorySection() {
       >
         <span>THE STORY TODAY</span>
         <p>
-          What started as a food-vendor dream now carries the Muerto De Hambre name in San Bernardino and Lawndale. The original idea is still at the center of it: build something of your own, feed people well, and keep moving forward.
+          What started as a food-vendor dream now carries the Muerto De Hambre name in San Bernardino, Lawndale, and Riverside. The original idea is still at the center of it: build something of your own, feed people well, and keep moving forward.
         </p>
       </motion.div>
     </section>

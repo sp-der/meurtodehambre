@@ -66,57 +66,25 @@ function PhotoCarousel({
   );
 }
 
-function playFireWhoosh() {
-  try {
-    const AudioContextClass = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (!AudioContextClass) return;
-    const ctx = new AudioContextClass();
-    const duration = 1.35;
-    const buffer = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
-    const channel = buffer.getChannelData(0);
-    for (let i = 0; i < channel.length; i += 1) channel[i] = (Math.random() * 2 - 1) * (1 - i / channel.length);
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.Q.value = 0.8;
-    filter.frequency.setValueAtTime(180, ctx.currentTime);
-    filter.frequency.exponentialRampToValueAtTime(1450, ctx.currentTime + 0.62);
-    filter.frequency.exponentialRampToValueAtTime(320, ctx.currentTime + duration);
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.42, ctx.currentTime + 0.18);
-    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
-    source.connect(filter).connect(gain).connect(ctx.destination);
-    source.start();
-    source.stop(ctx.currentTime + duration);
-  } catch {}
-}
-
 function FireIntro() {
   const [visible, setVisible] = useState(true);
-  const [burning, setBurning] = useState(false);
-  useEffect(() => { if (window.sessionStorage.getItem('mdh-intro-seen') === '1') setVisible(false); }, []);
-  const finishIntro = () => {
-    window.sessionStorage.setItem('mdh-intro-seen', '1');
-    setBurning(true);
-    playFireWhoosh();
-    window.setTimeout(() => setVisible(false), 1650);
-  };
-  const skipIntro = () => { window.sessionStorage.setItem('mdh-intro-seen', '1'); setVisible(false); };
+  useEffect(() => {
+    const timer = window.setTimeout(() => setVisible(false), 1500);
+    return () => window.clearTimeout(timer);
+  }, []);
   return (
     <AnimatePresence>
       {visible && (
-        <motion.div className={`intro ${burning ? 'intro-burning' : ''}`} initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }}>
+        <motion.div className="intro intro-logo-pulse" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.45 }}>
           <div className="intro-noise" />
-          <div className="intro-embers" aria-hidden="true">{Array.from({ length: 24 }).map((_, index) => <i key={index} style={{ '--i': index } as React.CSSProperties} />)}</div>
-          <div className="fire-sweep" aria-hidden="true"><span className="flame flame-one" /><span className="flame flame-two" /><span className="flame flame-three" /><span className="flame flame-four" /></div>
-          <motion.div className="intro-content brand-intro-content" animate={burning ? { scale: 1.04, opacity: 0.15 } : { scale: 1, opacity: 1 }} transition={{ duration: 1 }}>
+          <motion.div
+            className="intro-content brand-intro-content"
+            initial={{ scale: 0.92, opacity: 0 }}
+            animate={{ scale: [0.92, 1.045, 0.985, 1.025, 1], opacity: [0, 1, 1, 1, 1] }}
+            transition={{ duration: 1.45, times: [0, 0.3, 0.55, 0.78, 1], ease: 'easeInOut' }}
+          >
             <img src="/brand/skull.webp" alt="Muerto De Hambre Grill skull logo" className="intro-skull" />
             <img src="/brand/phillipians.webp" alt="Philippians 4:13" className="intro-verse" />
-            <p>Tap to ignite the grill.</p>
-            <button type="button" className="ignite-button" onClick={finishIntro} disabled={burning}><Flame size={18} fill="currentColor" />Enter Hungry</button>
-            <button type="button" className="skip-intro" onClick={skipIntro} disabled={burning}>Skip intro</button>
           </motion.div>
         </motion.div>
       )}
@@ -235,7 +203,7 @@ function OrderModal({ open, onClose }: { open: boolean; onClose: () => void }) {
                 </button>
               ))}
             </div>
-            <small>Pickup, delivery, menu availability and checkout continue securely through Otter.</small>
+            <small>Pickup, delivery, menu availability and checkout continue securely through each location’s ordering partner.</small>
           </motion.div>
         </motion.div>
       )}
@@ -275,7 +243,7 @@ export default function SiteExperience() {
     window.localStorage.setItem('mdh-preferred-location', location.key);
     window.location.href = location.orderUrl;
   };
-  const ticker = ['MUERTO DE HAMBRE', 'SAN BERNARDINO', 'COME HUNGRY', 'LAWNDALE', 'ORDER ONLINE', 'MEXICAN + FUSION'];
+  const ticker = ['MUERTO DE HAMBRE', 'SAN BERNARDINO', 'COME HUNGRY', 'LAWNDALE', 'RIVERSIDE FOODLAB', 'ORDER ONLINE', 'MEXICAN + FUSION'];
   return (
     <>
       <FireIntro /><Header onOrder={() => setOrderOpen(true)} /><OrderModal open={orderOpen} onClose={() => setOrderOpen(false)} /><CateringModal open={cateringOpen} onClose={() => setCateringOpen(false)} />
@@ -285,9 +253,9 @@ export default function SiteExperience() {
           <motion.img src="/brand/outline.webp" alt="" aria-hidden="true" className="hero-outline-art" initial={{ opacity: 0, x: 60, scale: 0.94 }} animate={{ opacity: 0.72, x: 0, scale: 1 }} transition={{ duration: 1, delay: 0.1 }} />
           <div className="hero-gold-orbit orbit-one" aria-hidden="true" /><div className="hero-gold-orbit orbit-two" aria-hidden="true" /><div className="hero-shade" /><div className="hero-grain" />
           <motion.div className="hero-content brand-hero-content" initial={{ opacity: 0, y: 34 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.18 }}>
-            <span className="eyebrow">SAN BERNARDINO · LAWNDALE</span>
+            <span className="eyebrow">SAN BERNARDINO · LAWNDALE · RIVERSIDE</span>
             <h1>COME<span>HUNGRY.</span></h1>
-            <p>Authentic Mexican flavor meets Gio’s fusion creativity. Two Southern California locations, one unmistakable Muerto De Hambre attitude.</p>
+            <p>Authentic Mexican flavor meets Gio’s fusion creativity. Three Southern California locations, one unmistakable Muerto De Hambre attitude.</p>
             <div className="hero-actions"><button type="button" className="order-button hero-order" onClick={() => setOrderOpen(true)}>Order Online<ArrowRight size={19} /></button><a className="ghost-button brand-ghost" href="/locations">View Locations</a></div>
             <a className="instagram-hero-link" href={INSTAGRAM_URL} target="_blank" rel="noreferrer"><Instagram size={16} /> Follow @muertodehambregrill</a>
           </motion.div>
@@ -312,24 +280,24 @@ export default function SiteExperience() {
 
         <StorySection />
 
-        <section className="section order-callout brand-order-callout"><motion.div className="order-callout-inner" variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.62 }}><img src="/brand/mascot.webp" alt="" aria-hidden="true" className="callout-mascot" /><span className="eyebrow">SKIP THE SCROLL</span><h2>HUNGRY ALREADY?</h2><p>Choose San Bernardino or Lawndale and jump straight into the live ordering menu.</p><button type="button" className="order-button callout-button" onClick={() => setOrderOpen(true)}>Choose a location<ArrowRight size={19} /></button></motion.div></section>
+        <section className="section order-callout brand-order-callout"><motion.div className="order-callout-inner" variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.62 }}><img src="/brand/mascot.webp" alt="" aria-hidden="true" className="callout-mascot" /><span className="eyebrow">SKIP THE SCROLL</span><h2>HUNGRY ALREADY?</h2><p>Choose San Bernardino, Lawndale, or Riverside and jump straight into the live ordering menu.</p><button type="button" className="order-button callout-button" onClick={() => setOrderOpen(true)}>Choose a location<ArrowRight size={19} /></button></motion.div></section>
 
         <section className="catering brand-catering" id="catering"><div className="catering-photo" /><div className="catering-shade" /><motion.div className="catering-content" variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.65 }}><span className="eyebrow">FEED THE WHOLE CREW</span><h2>CATERING,<br />MUERTO STYLE.</h2><p>Planning a party, celebration, or company event? Tell us the basics and the Muerto De Hambre team will follow up.</p><button className="ghost-button light catering-form-trigger" type="button" onClick={() => setCateringOpen(true)}>Fill out form</button></motion.div></section>
 
         <section className="section locations-section brand-locations-preview" id="locations">
-          <motion.div className="section-heading centered" variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }}><span className="eyebrow">TWO SPOTS. SAME HUNGER.</span><h2>FIND YOUR HAMBRE.</h2><p>See each location right on the map, plus full weekly hours, directions, and online ordering.</p></motion.div>
+          <motion.div className="section-heading centered" variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }}><span className="eyebrow">THREE SPOTS. SAME HUNGER.</span><img className="locations-heading-logo" src="/brand/mdh.webp" alt="Muerto De Hambre — The Flavor" /><p>See each location right on the map, plus full weekly hours, directions, online ordering, and delivery options.</p></motion.div>
           <div className="location-grid">{locations.map((location, index) => (
             <motion.article className="location-card brand-location-card" key={location.key} variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.58, delay: index * 0.08 }}>
               <div className="location-card-map">
                 <iframe title={`${location.city} Google Map`} src={mapEmbedUrl(location.mapQuery)} loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />
               </div>
-              <div className="location-card-body"><MapPin size={18} /><span>CALIFORNIA</span><h3>{location.city}</h3><p>{location.address}</p><div className="location-card-actions"><button type="button" onClick={() => orderLocation(location)}>Order this location <ArrowRight size={18} /></button><a href="/locations">Hours & directions</a></div></div>
+              <div className="location-card-body"><MapPin size={18} /><span>CALIFORNIA</span><h3>{location.city}</h3><p>{location.address}</p><div className="location-delivery-options"><strong>Delivery options</strong><div>{location.deliveryPartners.map((partner) => <a href={partner.url} target="_blank" rel="noreferrer" key={partner.name}>{partner.name}</a>)}</div></div><div className="location-card-actions"><button type="button" onClick={() => orderLocation(location)}>Order online <ArrowRight size={18} /></button><a href="/locations">Hours & directions</a></div></div>
             </motion.article>
           ))}</div>
         </section>
       </main>
 
-      <footer className="footer brand-footer"><div className="footer-mark"><UtensilsCrossed size={26} /><strong>MUERTO DE HAMBRE</strong><span>GRILL</span></div><div className="footer-links"><a href="#favorites">Food</a><a href="#story">Story</a><a href="/locations">Locations</a><a className="instagram-footer-link" href={INSTAGRAM_URL} target="_blank" rel="noreferrer"><Instagram size={15} /> Instagram</a><button type="button" onClick={() => setOrderOpen(true)}>Order Online</button></div><p>San Bernardino · Lawndale · California</p></footer>
+      <footer className="footer brand-footer"><div className="footer-mark"><UtensilsCrossed size={26} /><strong>MUERTO DE HAMBRE</strong><span>GRILL</span></div><div className="footer-links"><a href="#favorites">Food</a><a href="#story">Story</a><a href="/locations">Locations</a><a className="instagram-footer-link" href={INSTAGRAM_URL} target="_blank" rel="noreferrer"><Instagram size={15} /> Instagram</a><button type="button" onClick={() => setOrderOpen(true)}>Order Online</button></div><p>San Bernardino · Lawndale · Riverside · California</p></footer>
       <button className="mobile-order-sticky" type="button" onClick={() => setOrderOpen(true)}><Flame size={17} fill="currentColor" />Order Online</button>
     </>
   );

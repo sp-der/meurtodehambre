@@ -5,7 +5,7 @@ import styles from './locations.module.css';
 
 export const metadata = {
   title: 'Locations | Muerto De Hambre Grill',
-  description: 'Hours, addresses, maps, and online ordering for Muerto De Hambre Grill in San Bernardino and Lawndale.',
+  description: 'Hours, addresses, maps, online ordering, and delivery options for Muerto De Hambre Grill in San Bernardino, Lawndale, and Riverside.',
 };
 
 const mapEmbedUrl = (query: string) => `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
@@ -24,9 +24,9 @@ export default function LocationsPage() {
       </header>
 
       <section className={styles.hero}>
-        <span>FIND YOUR HAMBRE</span>
+        <span>THREE SPOTS. SAME HUNGER.</span>
         <h1>LOCATIONS</h1>
-        <p>Two spots. Same hunger. See each location on Google Maps, check current hours, get directions, or jump straight into online ordering.</p>
+        <p>See each location on Google Maps, check current hours, order online, or choose an available delivery partner.</p>
       </section>
 
       <section className={styles.grid}>
@@ -64,9 +64,20 @@ export default function LocationsPage() {
               ))}
             </div>
 
+            <div className={styles.delivery}>
+              <span>Delivery options</span>
+              <div>
+                {location.deliveryPartners.map((partner) => (
+                  <a href={partner.url} target="_blank" rel="noreferrer" key={partner.name}>
+                    {partner.name} <ArrowUpRight size={14} />
+                  </a>
+                ))}
+              </div>
+            </div>
+
             <div className={styles.actions}>
               <a href={location.orderUrl} target="_blank" rel="noreferrer" className={styles.order}>
-                Order {location.city} <ArrowUpRight size={18} />
+                Order online <ArrowUpRight size={18} />
               </a>
               <a
                 href={location.mapsUrl}

@@ -14,7 +14,7 @@ const mestizo = localFont({
 
 export const metadata: Metadata = {
   title: 'Muerto De Hambre Grill',
-  description: 'Muerto De Hambre Grill. San Bernardino and Lawndale, California.',
+  description: 'Muerto De Hambre Grill. San Bernardino, Lawndale, and Riverside, California.',
   metadataBase: new URL('https://muertodehambre.com'),
   icons: {
     icon: '/favicon.png',
