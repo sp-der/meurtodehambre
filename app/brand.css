@@ -94,7 +94,7 @@ body {
 
 /* Header */
 .brand-header {
-  top: 8px;
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
   height: 104px;
   border-bottom: 0;
   background: linear-gradient(180deg, rgba(8,7,5,.8), rgba(8,7,5,.16));
@@ -545,7 +545,7 @@ body {
 }
 
 @media (max-width: 900px) {
-  .brand-header { height: 78px; }
+  .brand-header { height: 92px; }
   .brand-header-logo { width: min(150px, 42vw); }
   .brand-hero { min-height: 900px; padding: 125px 24px 90px; align-items: end; }
   .brand-hero .hero-shade { background: linear-gradient(0deg, rgba(8,7,5,.97) 0%, rgba(8,7,5,.72) 55%, rgba(8,7,5,.38) 100%); }

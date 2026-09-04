@@ -56,7 +56,13 @@ function PhotoCarousel({
           >
             {images.map(([src, alt]) => (
               <figure className="photo-carousel-card" key={`${src}-${duplicate ? 'duplicate' : 'primary'}`}>
-                <img src={src} alt={duplicate ? '' : alt} loading="lazy" />
+                <img
+                  src={src}
+                  alt={duplicate ? '' : alt}
+                  loading="eager"
+                  decoding="async"
+                  draggable={false}
+                />
               </figure>
             ))}
           </div>
