@@ -1,12 +1,10 @@
-/* Seamless, continuously looping photo carousels.
-   Each track contains two identical image sets. The track moves exactly one
-   set-width, so the reset lands on the same visual frame with no visible jump. */
+/* Seamless continuously looping photo carousels. */
 .photo-carousel {
-  --carousel-loop-duration: 14s;
+  --carousel-loop-duration: 10s;
 }
 
 .photo-carousel-food {
-  --carousel-loop-duration: 16s;
+  --carousel-loop-duration: 12s;
 }
 
 .photo-carousel-track,
@@ -15,9 +13,14 @@
   width: max-content;
   gap: 0;
   transform: translate3d(-50%, 0, 0);
-  animation: mdh-carousel-loop-right var(--carousel-loop-duration) linear infinite;
+  animation-name: mdh-carousel-loop-right !important;
+  animation-duration: var(--carousel-loop-duration) !important;
+  animation-timing-function: linear !important;
+  animation-iteration-count: infinite !important;
+  animation-play-state: running !important;
   will-change: transform;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .photo-carousel-set {
@@ -32,24 +35,34 @@
   to { transform: translate3d(0, 0, 0); }
 }
 
+.intro-verse {
+  width: min(285px, 48vw) !important;
+  max-width: 48vw !important;
+}
+
 @media (max-width: 650px) {
   .photo-carousel {
-    --carousel-loop-duration: 11s;
+    --carousel-loop-duration: 8s;
   }
 
   .photo-carousel-food {
-    --carousel-loop-duration: 13s;
+    --carousel-loop-duration: 10s;
+  }
+
+  .intro-verse {
+    width: min(210px, 48vw) !important;
+    max-width: 48vw !important;
+    margin-top: 0 !important;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .photo-carousel-track,
   .photo-carousel-reverse .photo-carousel-track {
-    animation-duration: 28s;
-  }
-
-  .photo-carousel-food .photo-carousel-track,
-  .photo-carousel-food.photo-carousel-reverse .photo-carousel-track {
-    animation-duration: 32s;
+    animation-name: mdh-carousel-loop-right !important;
+    animation-duration: var(--carousel-loop-duration) !important;
+    animation-timing-function: linear !important;
+    animation-iteration-count: infinite !important;
+    animation-play-state: running !important;
   }
 }
