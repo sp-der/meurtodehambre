@@ -34,8 +34,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={mestizo.variable}>{children}</body>
+    <html lang="en" className={mestizo.variable} suppressHydrationWarning>
+      <body>{children}</body>
     </html>
   );
 }
