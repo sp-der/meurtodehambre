@@ -615,6 +615,7 @@ a {
 }
 
 .photo-carousel-event {
+  --carousel-duration: 56s;
   padding: 28px 0 88px;
   border-top: 1px solid rgba(222, 176, 89, .18);
   border-bottom: 1px solid rgba(222, 176, 89, .2);
@@ -1467,6 +1468,10 @@ a {
 
   .photo-carousel-reverse {
     --carousel-duration: 21s;
+  }
+
+  .photo-carousel-event {
+    --carousel-duration: 40s;
   }
 
   .photo-carousel-card {
