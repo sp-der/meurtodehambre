@@ -160,8 +160,8 @@
   }
 
   .brand-header-logo {
-    width: min(220px, 56vw);
-    max-width: 56vw;
+    width: min(145px, 42vw);
+    max-width: 42vw;
   }
 
   .brand-hero {
@@ -215,16 +215,6 @@
     width: 108vw;
     max-width: none;
     opacity: .15 !important;
-  }
-
-  .hero-gold-orbit {
-    right: -30vw;
-    width: 94vw;
-  }
-
-  .orbit-two {
-    right: -18vw;
-    width: 74vw;
   }
 
   .section {

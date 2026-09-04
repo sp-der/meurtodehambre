@@ -92,13 +92,13 @@ body {
 /* Header */
 .brand-header {
   height: 104px;
-  border-bottom-color: rgba(222, 174, 86, .27);
+  border-bottom: 0;
   background: linear-gradient(180deg, rgba(8,7,5,.8), rgba(8,7,5,.16));
 }
 
 .brand-header-logo {
   display: block;
-  width: min(330px, 28vw);
+  width: min(170px, 15vw);
 }
 
 .brand-header-logo img {
@@ -109,11 +109,28 @@ body {
 }
 
 .desktop-nav a {
+  padding: 0 20px;
   color: #f6e8c6;
+  font-size: .76rem;
 }
 
 .desktop-nav a::after {
   background: #d9a847;
+}
+
+.desktop-nav a + a::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 1px;
+  height: 1.25rem;
+  content: '';
+  transform: translateY(-50%);
+  background: rgba(224, 177, 88, .42);
+}
+
+.brand-header .desktop-nav {
+  gap: 0;
 }
 
 /* Hero */
@@ -130,9 +147,9 @@ body {
 .hero-outline-art {
   position: absolute;
   z-index: 3;
-  top: 17%;
-  right: 1vw;
-  width: min(790px, 58vw);
+  top: 13%;
+  right: -1vw;
+  width: min(930px, 64vw);
   height: auto;
   filter: drop-shadow(0 22px 35px rgba(0,0,0,.42));
   pointer-events: none;
@@ -517,7 +534,7 @@ body {
 }
 
 @media (max-width: 1000px) {
-  .brand-header-logo { width: 240px; }
+  .brand-header-logo { width: 170px; }
   .brand-hero .hero-shade { background: linear-gradient(90deg, rgba(8,7,5,.97) 0%, rgba(8,7,5,.91) 50%, rgba(8,7,5,.55) 78%, rgba(8,7,5,.28) 100%); }
   .brand-locations-preview .location-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .brand-locations-preview .brand-location-card:last-child { grid-column: 1 / -1; width: min(620px, 100%); justify-self: center; }
@@ -525,14 +542,12 @@ body {
 
 @media (max-width: 900px) {
   .brand-header { height: 78px; }
-  .brand-header-logo { width: min(270px, 60vw); }
+  .brand-header-logo { width: min(150px, 42vw); }
   .brand-hero { min-height: 900px; padding: 125px 24px 90px; align-items: end; }
   .brand-hero .hero-shade { background: linear-gradient(0deg, rgba(8,7,5,.97) 0%, rgba(8,7,5,.72) 55%, rgba(8,7,5,.38) 100%); }
-  .hero-gold-orbit { right: -15vw; top: 34%; width: 78vw; }
-  .orbit-two { right: -6vw; width: 60vw; }
   .hero-logo { width: min(620px, 86vw); }
   .hero-backdrop-art { inset: -5%; width: 110%; height: 110%; opacity: .14; }
-  .hero-outline-art { top: 20%; right: -26vw; width: 112vw; opacity: .2 !important; }
+  .hero-outline-art { top: 18%; right: -30vw; width: 128vw; opacity: .2 !important; }
 }
 
 @media (max-width: 650px) {
@@ -547,7 +562,7 @@ body {
   .location-card-actions { align-items: flex-start; flex-direction: column; gap: 13px; }
   .intro-skull { width: min(440px, 88vw); max-height: 49svh; }
   .intro-verse { width: min(340px, 76vw); margin-top: 2px; }
-  .hero-outline-art { top: 19%; right: -38vw; width: 145vw; opacity: .16 !important; }
+  .hero-outline-art { top: 18%; right: -44vw; width: 165vw; opacity: .16 !important; }
   .locations-heading-logo { width: min(520px, 94vw); }
   .brand-locations-preview .location-grid { grid-template-columns: 1fr; }
   .brand-locations-preview .brand-location-card:last-child { grid-column: auto; width: 100%; }
