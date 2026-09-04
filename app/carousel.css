@@ -1,10 +1,13 @@
-/* Seamless continuously looping photo carousels. */
+/* True seamless marquee carousels.
+   The track stays still. Each identical set moves by exactly its own width,
+   so the handoff is pixel-perfect and the cards never pile on each other. */
 .photo-carousel {
-  --carousel-loop-duration: 10s;
+  --carousel-loop-duration: 11s;
+  --carousel-gap: 22px;
 }
 
 .photo-carousel-food {
-  --carousel-loop-duration: 12s;
+  --carousel-loop-duration: 13s;
 }
 
 .photo-carousel-track,
@@ -12,8 +15,18 @@
   display: flex;
   width: max-content;
   gap: 0;
-  transform: translate3d(-50%, 0, 0);
-  animation-name: mdh-carousel-loop-right !important;
+  transform: none !important;
+  animation: none !important;
+  will-change: auto;
+}
+
+.photo-carousel-set {
+  display: flex;
+  flex: none;
+  gap: var(--carousel-gap) !important;
+  padding-right: var(--carousel-gap) !important;
+  transform: translate3d(-100%, 0, 0);
+  animation-name: mdh-carousel-set-loop !important;
   animation-duration: var(--carousel-loop-duration) !important;
   animation-timing-function: linear !important;
   animation-iteration-count: infinite !important;
@@ -23,43 +36,48 @@
   -webkit-backface-visibility: hidden;
 }
 
-.photo-carousel-set {
-  display: flex;
-  flex: none;
-  gap: var(--carousel-gap);
-  padding-right: var(--carousel-gap);
+.photo-carousel-card {
+  margin: 0 !important;
+  flex-shrink: 0 !important;
 }
 
-@keyframes mdh-carousel-loop-right {
-  from { transform: translate3d(-50%, 0, 0); }
+@keyframes mdh-carousel-set-loop {
+  from { transform: translate3d(-100%, 0, 0); }
   to { transform: translate3d(0, 0, 0); }
 }
 
+/* Make the Philippians mark visibly smaller on the intro. */
 .intro-verse {
-  width: min(285px, 48vw) !important;
-  max-width: 48vw !important;
+  width: min(250px, 40vw) !important;
+  max-width: 40vw !important;
 }
 
 @media (max-width: 650px) {
   .photo-carousel {
-    --carousel-loop-duration: 8s;
+    --carousel-loop-duration: 9s;
+    --carousel-gap: 20px;
   }
 
   .photo-carousel-food {
-    --carousel-loop-duration: 10s;
+    --carousel-loop-duration: 11s;
+  }
+
+  .photo-carousel-card {
+    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.36) !important;
   }
 
   .intro-verse {
-    width: min(210px, 48vw) !important;
-    max-width: 48vw !important;
+    width: min(175px, 42vw) !important;
+    max-width: 42vw !important;
     margin-top: 0 !important;
   }
 }
 
+/* The site has a global reduced-motion override. Keep these two marquees moving
+   because they are an intentional content carousel, not a decorative entrance. */
 @media (prefers-reduced-motion: reduce) {
-  .photo-carousel-track,
-  .photo-carousel-reverse .photo-carousel-track {
-    animation-name: mdh-carousel-loop-right !important;
+  .photo-carousel-set {
+    animation-name: mdh-carousel-set-loop !important;
     animation-duration: var(--carousel-loop-duration) !important;
     animation-timing-function: linear !important;
     animation-iteration-count: infinite !important;
