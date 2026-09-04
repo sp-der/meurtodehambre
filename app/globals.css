@@ -600,6 +600,8 @@ a {
 
 /* Auto-scrolling photo galleries */
 .photo-carousel {
+  --carousel-gap: 18px;
+  --carousel-half-gap: 9px;
   width: 100%;
   overflow: hidden;
   background: #0d0c09;
@@ -624,20 +626,20 @@ a {
 .photo-carousel-track {
   display: flex;
   width: max-content;
-  gap: 18px;
-  padding-inline: 9px;
+  gap: var(--carousel-gap);
   animation: photo-carousel-forward 46s linear infinite;
   will-change: transform;
+}
+
+.photo-carousel-group {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--carousel-gap);
 }
 
 .photo-carousel-reverse .photo-carousel-track {
   animation-name: photo-carousel-reverse;
   animation-duration: 38s;
-}
-
-.photo-carousel:hover .photo-carousel-track,
-.photo-carousel:focus-within .photo-carousel-track {
-  animation-play-state: paused;
 }
 
 .photo-carousel-card {
@@ -672,11 +674,11 @@ a {
 }
 
 @keyframes photo-carousel-forward {
-  to { transform: translateX(calc(-50% - 9px)); }
+  to { transform: translateX(calc(-50% - var(--carousel-half-gap))); }
 }
 
 @keyframes photo-carousel-reverse {
-  from { transform: translateX(calc(-50% - 9px)); }
+  from { transform: translateX(calc(-50% - var(--carousel-half-gap))); }
   to { transform: translateX(0); }
 }
 
@@ -1455,9 +1457,9 @@ a {
     padding: 20px 0 62px;
   }
 
-  .photo-carousel-track {
-    gap: 12px;
-    padding-inline: 6px;
+  .photo-carousel {
+    --carousel-gap: 12px;
+    --carousel-half-gap: 6px;
   }
 
   .photo-carousel-card {

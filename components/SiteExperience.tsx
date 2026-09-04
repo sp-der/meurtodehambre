@@ -45,19 +45,22 @@ function PhotoCarousel({
   variant?: 'event' | 'food';
   reverse?: boolean;
 }) {
-  const loopedImages = [...images, ...images];
-
   return (
     <section className={`photo-carousel photo-carousel-${variant} ${reverse ? 'photo-carousel-reverse' : ''}`} aria-label={label}>
       <div className="photo-carousel-track">
-        {loopedImages.map(([src, alt], index) => {
-          const duplicate = index >= images.length;
-          return (
-            <figure className="photo-carousel-card" key={`${src}-${index}`} aria-hidden={duplicate || undefined}>
-              <img src={src} alt={duplicate ? '' : alt} loading="lazy" />
-            </figure>
-          );
-        })}
+        {[false, true].map((duplicate) => (
+          <div
+            className="photo-carousel-group"
+            key={duplicate ? 'duplicate' : 'primary'}
+            aria-hidden={duplicate || undefined}
+          >
+            {images.map(([src, alt]) => (
+              <figure className="photo-carousel-card" key={`${src}-${duplicate ? 'duplicate' : 'primary'}`}>
+                <img src={src} alt={duplicate ? '' : alt} loading="lazy" />
+              </figure>
+            ))}
+          </div>
+        ))}
       </div>
     </section>
   );
