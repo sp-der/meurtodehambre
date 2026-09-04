@@ -1,7 +1,16 @@
 import type { Metadata, Viewport } from 'next';
+import localFont from 'next/font/local';
 import './globals.css';
 import './brand.css';
 import './quality.css';
+
+const mestizo = localFont({
+  src: './fonts/MestizoFont.ttf',
+  variable: '--font-mestizo',
+  display: 'swap',
+  weight: '400',
+  style: 'normal',
+});
 
 export const metadata: Metadata = {
   title: 'Muerto De Hambre Grill',
@@ -26,7 +35,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>{children}</body>
+      <body className={mestizo.variable}>{children}</body>
     </html>
   );
 }
