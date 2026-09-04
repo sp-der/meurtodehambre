@@ -41,69 +41,25 @@ function PhotoCarousel({
   variant?: 'event' | 'food';
   reverse?: boolean;
 }) {
-  const [firstImage, setFirstImage] = useState(0);
-  const [isMoving, setIsMoving] = useState(false);
-  const windowSize = variant === 'food' ? 7 : 6;
-
-  const normalizeIndex = (index: number) => (index + images.length) % images.length;
-  const trackImages = Array.from({ length: windowSize }, (_, slot) => {
-    const trackStart = reverse ? firstImage - 1 : firstImage;
-    const imageIndex = normalizeIndex(trackStart + slot);
-    return { imageIndex, image: images[imageIndex] };
-  });
-
-  useEffect(() => {
-    if (isMoving) return;
-
-    let secondFrame = 0;
-    const firstFrame = window.requestAnimationFrame(() => {
-      secondFrame = window.requestAnimationFrame(() => setIsMoving(true));
-    });
-
-    return () => {
-      window.cancelAnimationFrame(firstFrame);
-      window.cancelAnimationFrame(secondFrame);
-    };
-  }, [firstImage, isMoving]);
-
-  useEffect(() => {
-    if (!isMoving) return;
-
-    // WebKit can occasionally omit transitionend after a tab or iframe is
-    // throttled. Keep the carousel self-healing instead of leaving it frozen.
-    const recoveryTimer = window.setTimeout(() => {
-      setIsMoving(false);
-      setFirstImage((current) => normalizeIndex(current + (reverse ? -1 : 1)));
-    }, variant === 'food' ? 5000 : 6500);
-
-    return () => window.clearTimeout(recoveryTimer);
-  }, [images.length, isMoving, reverse, variant]);
-
-  const finishStep = (event: React.TransitionEvent<HTMLDivElement>) => {
-    if (event.target !== event.currentTarget || event.propertyName !== 'transform') return;
-
-    setIsMoving(false);
-    setFirstImage((current) => normalizeIndex(current + (reverse ? -1 : 1)));
-  };
-
   return (
     <section className={`photo-carousel photo-carousel-${variant} ${reverse ? 'photo-carousel-reverse' : ''}`} aria-label={label}>
-      <div
-        className={`photo-carousel-track ${isMoving ? 'photo-carousel-track-moving' : ''}`}
-        onTransitionEnd={finishStep}
-      >
-        {trackImages.map(({ imageIndex, image: [src, alt] }) => (
-          <figure className="photo-carousel-card" key={src}>
-            <Image
-              src={src}
-              alt={alt}
-              fill
-              sizes={variant === 'food' ? '(max-width: 650px) 66vw, 25vw' : '(max-width: 650px) 82vw, 35vw'}
-              loading="eager"
-              draggable={false}
-              data-image-index={imageIndex}
-            />
-          </figure>
+      <div className="photo-carousel-track">
+        {[0, 1].map((copy) => (
+          <div className="photo-carousel-set" key={copy} aria-hidden={copy === 1 ? 'true' : undefined}>
+            {images.map(([src, alt], imageIndex) => (
+              <figure className="photo-carousel-card" key={`${copy}-${src}`}>
+                <Image
+                  src={src}
+                  alt={copy === 0 ? alt : ''}
+                  fill
+                  sizes={variant === 'food' ? '(max-width: 650px) 66vw, 25vw' : '(max-width: 650px) 82vw, 35vw'}
+                  loading="eager"
+                  draggable={false}
+                  data-image-index={imageIndex}
+                />
+              </figure>
+            ))}
+          </div>
         ))}
       </div>
     </section>
