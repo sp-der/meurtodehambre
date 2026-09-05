@@ -158,11 +158,9 @@ export async function POST(request: Request) {
                 <td align="center" style="padding:28px 12px;">
                   <table role="presentation" width="640" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:640px;border-collapse:separate;border-spacing:0;background:#11100d;border:1px solid #a97931;border-radius:26px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.45);">
                     <tr>
-                      <td background="${BACKDROP_URL}" style="background-color:#11100d;background-image:linear-gradient(rgba(8,7,5,.72),rgba(8,7,5,.92)),url('${BACKDROP_URL}');background-position:center;background-size:cover;padding:32px 28px 30px;border-bottom:1px solid #8d6225;text-align:center;">
-                        <img src="${HEADER_LOGO_URL}" width="210" alt="Muerto De Hambre Grill" style="display:block;width:210px;max-width:72%;height:auto;margin:0 auto 22px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.5));" />
-                        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:800;color:#e4bb68;margin-bottom:10px;">Catering Inquiry</div>
-                        <h1 style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:34px;line-height:1.05;color:#fff6df;font-weight:700;letter-spacing:-.4px;">New Catering Request</h1>
-                        <p style="margin:12px auto 0;max-width:470px;color:#c9b98f;font-size:14px;line-height:1.6;">A new event request just came through the Muerto De Hambre website.</p>
+                      <td background="${BACKDROP_URL}" style="background-color:#11100d;background-image:linear-gradient(rgba(8,7,5,.72),rgba(8,7,5,.92)),url('${BACKDROP_URL}');background-position:center;background-size:cover;padding:18px 24px 20px;border-bottom:1px solid #8d6225;text-align:center;">
+                        <img src="${HEADER_LOGO_URL}" width="170" alt="Muerto De Hambre Grill" style="display:block;width:170px;max-width:62%;height:auto;margin:0 auto 10px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.5));" />
+                        <h1 style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:28px;line-height:1.08;color:#fff6df;font-weight:700;letter-spacing:-.3px;">New Catering Request</h1>
                       </td>
                     </tr>
 
